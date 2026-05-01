@@ -33,6 +33,8 @@ class SlotsProvider extends ChangeNotifier {
     await _scheduleNotifications(s);
     _items = _repo.findActiveSlots();
     notifyListeners();
+    // 주: medications 미러는 MedicationsProvider.add 시점에 이미 push됨.
+    // 슬롯 ↔ 약 매핑(slot_medications)은 부모 로컬만 (Q3 결정 — Supabase 미러 X).
     return s;
   }
 
