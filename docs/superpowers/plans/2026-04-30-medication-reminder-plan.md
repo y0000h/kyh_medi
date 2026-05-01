@@ -3484,6 +3484,11 @@ git commit -m "feat(app): 진입점 + 모드 분기 (부모/자녀) + Provider �
 ---
 
 > **여기까지 Phase 0~6 — 부모 모드 풀스택이 완성됨.** Phase 7부터는 Supabase 동기화/페어링/자녀 모드/FCM/수익화/출시.
+>
+> **2026-05-01 검증 메모**:
+> - `flutter analyze` 0 errors. APK 빌드 + emulator cold launch 통과. ModeSelect → 부모 탭 → Onboarding 진입 ✅.
+> - 디버그 빌드 cold launch 직후 첫 부모 탭에서 ANR 1회 (setUserMode + Provider 4종 동시 build로 main thread ~5초 점유). 두 번째 시도는 정상. release 빌드에서는 사라질 가능성 큼 — Phase 12/13에서 release 빌드 cold launch 측정 후 결정. 만약 release에서도 ANR이면 `_parentApp()` 진입을 FutureBuilder + warmup으로 분리.
+> - Plan §12.1 (AdMob meta-data)을 6.3 검증 시점에 선반영 — 자세한 사정은 §12.1 참조.
 
 ---
 
@@ -5044,12 +5049,14 @@ git commit -m "feat(fcm): 백그라운드 + 포그라운드 메시지 핸들러"
 
 ## Phase 12: 수익화 — AdMob + IAP (부모 모드만)
 
-### Task 12.1: AdMob 초기화 + AndroidManifest
+### Task 12.1: AdMob 초기화 + AndroidManifest ✅ 선반영 (커밋 1747e14, 2026-05-01)
 
 **Files:**
 - Modify: `android/app/src/main/AndroidManifest.xml`
 
 > `MobileAds.instance.initialize()`는 이미 Phase 6의 main.dart에 추가됨.
+>
+> **⚠️ Plan 누락 이슈**: meta-data가 manifest에 없으면 Phase 6 cold launch 시 `Unable to get provider MobileAdsInitProvider` 즉시 크래시. 이 Task는 Phase 6.3 검증 단계에서 선반영했음 (커밋 `1747e14`). Phase 12에서 실제 app ID로 교체할 때만 다시 손대면 됨.
 
 - [ ] **Step 1: AndroidManifest에 AdMob app ID 메타**
 
