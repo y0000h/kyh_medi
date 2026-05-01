@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'core/hive/hive_init.dart';
+import 'core/supabase/parent_sync_service.dart';
 import 'core/theme/caregiver_theme.dart';
 import 'core/theme/senior_theme.dart';
 import 'features/child/child_shell.dart';
@@ -76,11 +77,26 @@ class _AppState extends State<App> {
     );
     final doseRepo = DoseEventRepository(Hive.box<DoseEvent>(HiveInit.doseEventsBox));
 
+    // 페어링 안 된 부모는 sync.* 호출이 모두 no-op이라 안전.
+    final sync = ParentSyncService();
+    final intakeProvider = IntakeProvider(doseRepo, slotRepo, medRepo)
+      ..onMissed = (events) {
+        for (final e in events) {
+          sync.insertDoseEvent(e);
+        }
+      }
+      ..onTaken = (events) {
+        for (final e in events) {
+          sync.insertDoseEvent(e);
+        }
+      };
+
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => MedicationsProvider(medRepo)),
+        Provider.value(value: sync),
+        ChangeNotifierProvider(create: (_) => MedicationsProvider(medRepo, sync: sync)),
         ChangeNotifierProvider(create: (_) => SlotsProvider(slotRepo)),
-        ChangeNotifierProvider(create: (_) => IntakeProvider(doseRepo, slotRepo, medRepo)),
+        ChangeNotifierProvider.value(value: intakeProvider),
         ChangeNotifierProvider(create: (_) => AdsProvider()..init()),
       ],
       child: MaterialApp(
