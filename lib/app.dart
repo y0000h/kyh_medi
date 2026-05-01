@@ -15,6 +15,7 @@ import 'features/parent/medication/domain/medication.dart';
 import 'features/parent/medication/ui/medications_provider.dart';
 import 'features/parent/monetization/ads_provider.dart';
 import 'features/parent/onboarding/onboarding_screen.dart';
+import 'features/parent/pairing/ui/pairing_provider.dart';
 import 'features/parent/parent_shell.dart';
 import 'features/parent/settings/data/settings_repository.dart';
 import 'features/parent/settings/domain/app_settings.dart';
@@ -98,6 +99,7 @@ class _AppState extends State<App> {
         ChangeNotifierProvider(create: (_) => SlotsProvider(slotRepo)),
         ChangeNotifierProvider.value(value: intakeProvider),
         ChangeNotifierProvider(create: (_) => AdsProvider()..init()),
+        ChangeNotifierProvider(create: (_) => PairingProvider()),
       ],
       child: MaterialApp(
         title: 'KYH 약 알림',
