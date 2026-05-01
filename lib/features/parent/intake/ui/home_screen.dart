@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/theme/tokens.dart';
+import '../../../../core/notification/notification_service.dart';
 import '../domain/dose_event.dart';
 import 'intake_provider.dart';
 import 'intake_check_screen.dart';
@@ -17,6 +18,18 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     Future.microtask(() => context.read<IntakeProvider>().loadToday());
+    NotificationService.onTap = (payload) {
+      // payload: "slot:<slotId>"
+      if (!payload.startsWith('slot:')) return;
+      final slotId = payload.substring(5);
+      final view = context.read<IntakeProvider>().today
+          .where((t) => t.slot.id == slotId).firstOrNull;
+      if (view != null && mounted) {
+        Navigator.push(context, MaterialPageRoute(
+          builder: (_) => IntakeCheckScreen(slotView: view),
+        ));
+      }
+    };
   }
 
   Color _statusColor(String s) {
