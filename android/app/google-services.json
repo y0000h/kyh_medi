@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "477324289156",
+    "project_id": "kyh-medi",
+    "storage_bucket": "kyh-medi.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:477324289156:android:ddd1f48b3d49106700ced1",
+        "android_client_info": {
+          "package_name": "com.kyh.medi.kyh_medi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcyDX3-rQIwjoMHOwasqdCFgTrHAS4n-w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
