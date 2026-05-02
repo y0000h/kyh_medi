@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../shared/widgets/senior_button.dart';
+import '../../monetization/ad_banner.dart';
 import '../../monetization/ads_provider.dart';
 import '../../pairing/ui/connect_child_screen.dart';
 
@@ -54,6 +55,8 @@ class SettingsScreen extends StatelessWidget {
           const Text('KYH 약 알림 v1.0.0', style: TextStyle(fontSize: 16)),
           const Text('Korean Young Health · 한 알도, 잊지 않게.',
               style: TextStyle(fontSize: 14, color: AppColors.ink2)),
+          const SizedBox(height: 24),
+          const Center(child: AdBanner()),
         ],
       ),
     );

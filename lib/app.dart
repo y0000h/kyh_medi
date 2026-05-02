@@ -35,8 +35,6 @@ class _AppState extends State<App> {
   // null = 아직 모드 미선택, 'parent' 또는 'child'
   String? _mode;
   bool _onboardingDone = false;
-  // Phase 7부터 본격 사용 예정. 현재는 초기 상태 로드용 단일 인스턴스로 보유.
-  // ignore: unused_field
   late final SettingsRepository _settingsRepo;
 
   @override
@@ -98,7 +96,7 @@ class _AppState extends State<App> {
         ChangeNotifierProvider(create: (_) => MedicationsProvider(medRepo, sync: sync)),
         ChangeNotifierProvider(create: (_) => SlotsProvider(slotRepo)),
         ChangeNotifierProvider.value(value: intakeProvider),
-        ChangeNotifierProvider(create: (_) => AdsProvider()..init()),
+        ChangeNotifierProvider(create: (_) => AdsProvider(_settingsRepo)..init()),
         ChangeNotifierProvider(create: (_) => PairingProvider()),
       ],
       child: MaterialApp(
