@@ -45,6 +45,7 @@ dev_dependencies:
   flutter_lints: ^4.0.0
   build_runner: ^2.4.13
   hive_generator: ^2.0.1
+  flutter_launcher_icons: ^0.13.1
 
 flutter:
   uses-material-design: true
@@ -52,3 +53,12 @@ flutter:
     - family: Pretendard
       fonts:
         - asset: assets/fonts/PretendardVariable.ttf
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/icon/icon.png"
+  background_color: "#ECE8E1"
+  theme_color: "#B86F40"
+  adaptive_icon_background: "#ECE8E1"
+  adaptive_icon_foreground: "assets/icon/icon.png"
