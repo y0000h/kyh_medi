@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/firebase/fcm_service.dart';
 import '../../core/supabase/supabase_init.dart';
 import 'auth/ui/child_login_screen.dart';
 import 'home/ui/child_home_provider.dart';
@@ -19,9 +20,16 @@ class _ChildShellState extends State<ChildShell> {
   @override
   void initState() {
     super.initState();
+    if (_signedIn) {
+      FcmService.registerForCurrentUser();
+    }
     SupabaseInit.client.auth.onAuthStateChange.listen((event) {
       if (!mounted) return;
-      setState(() => _signedIn = event.session?.user != null);
+      final newSignedIn = event.session?.user != null;
+      setState(() => _signedIn = newSignedIn);
+      if (newSignedIn) {
+        FcmService.registerForCurrentUser();
+      }
     });
   }
 
