@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
     // START: FlutterFire Configuration
@@ -6,6 +9,15 @@ plugins {
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+}
+
+// 릴리즈 서명 키 정보. android/key.properties는 .gitignore 처리.
+// 파일이 없으면 release 빌드는 debug 키로 폴백 (개발 편의).
+val keystoreProperties = Properties().apply {
+    val file = rootProject.file("key.properties")
+    if (file.exists()) {
+        load(FileInputStream(file))
+    }
 }
 
 android {
@@ -34,11 +46,24 @@ android {
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProperties["keyAlias"] as String?
+            keyPassword = keystoreProperties["keyPassword"] as String?
+            val storeFilePath = keystoreProperties["storeFile"] as String?
+            storeFile = storeFilePath?.let { file(it) }
+            storePassword = keystoreProperties["storePassword"] as String?
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            // key.properties가 있으면 release 키로 서명, 없으면 debug 폴백.
+            signingConfig = if (keystoreProperties.isNotEmpty()) {
+                signingConfigs.getByName("release")
+            } else {
+                signingConfigs.getByName("debug")
+            }
         }
     }
 }

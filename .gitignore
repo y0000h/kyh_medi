@@ -43,3 +43,9 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Keystore (절대 커밋 금지 — 분실 시 앱 업데이트 영원히 불가)
+android/key.properties
+android/app/upload-keystore.jks
+**/key.properties
+*.jks
