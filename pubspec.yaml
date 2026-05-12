@@ -1,7 +1,7 @@
 name: kyh_medi
 description: "한 알도, 잊지 않게. 어르신용 약 알림 + 자녀 모니터링."
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: ^3.5.0
@@ -49,6 +49,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/prompts/
   fonts:
     - family: Pretendard
       fonts:
@@ -58,7 +60,7 @@ flutter_launcher_icons:
   android: true
   ios: false
   image_path: "assets/icon/icon.png"
-  background_color: "#ECE8E1"
-  theme_color: "#B86F40"
-  adaptive_icon_background: "#ECE8E1"
+  background_color: "#F5F1EC"
+  theme_color: "#C26644"
+  adaptive_icon_background: "#F5F1EC"
   adaptive_icon_foreground: "assets/icon/icon.png"
