@@ -1,6 +1,7 @@
 # Miscellaneous
 .superpowers/
 /_*.png
+docs/screenshots/_*.png
 *.class
 *.log
 *.pyc
