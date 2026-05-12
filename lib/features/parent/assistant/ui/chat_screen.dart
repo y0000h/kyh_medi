@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../../../core/theme/tokens.dart';
 
 class _Message {
   final String text;
@@ -300,8 +301,8 @@ class _InputBar extends StatelessWidget {
                   horizontal: 18,
                   vertical: 14,
                 ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(28),
+                border: const OutlineInputBorder(
+                  borderRadius: AppRadius.pillAll,
                   borderSide: BorderSide.none,
                 ),
               ),

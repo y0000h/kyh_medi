@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../../core/theme/tokens.dart';
 import '../../../../shared/widgets/caregiver_card.dart';
 import '../../add_parent/ui/add_parent_screen.dart';
 import '../../auth/child_auth_service.dart';
@@ -92,7 +93,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
                             height: 56,
                             decoration: BoxDecoration(
                               color: Colors.blue.shade50,
-                              borderRadius: BorderRadius.circular(28),
+                              borderRadius: AppRadius.pillAll,
                             ),
                             child: const Icon(Icons.person,
                                 size: 32, color: Colors.blueAccent),

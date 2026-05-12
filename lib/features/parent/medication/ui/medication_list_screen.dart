@@ -26,7 +26,7 @@ class MedicationListScreen extends StatelessWidget {
                   final m = meds[i];
                   return Card(child: ListTile(
                     leading: m.photoPath != null
-                        ? ClipRRect(borderRadius: BorderRadius.circular(4),
+                        ? ClipRRect(borderRadius: AppRadius.smAll,
                             child: Image.file(File(m.photoPath!),
                                 width: 48, height: 48, fit: BoxFit.cover))
                         : const Icon(Icons.medication, size: 36, color: AppColors.pillDeep),

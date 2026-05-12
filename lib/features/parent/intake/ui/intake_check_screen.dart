@@ -26,7 +26,7 @@ class IntakeCheckScreen extends StatelessWidget {
               child: Padding(padding: const EdgeInsets.all(16),
                 child: Row(children: [
                   if (m.photoPath != null)
-                    ClipRRect(borderRadius: BorderRadius.circular(8),
+                    ClipRRect(borderRadius: AppRadius.smAll,
                       child: Image.file(File(m.photoPath!),
                           width: 96, height: 96, fit: BoxFit.cover))
                   else

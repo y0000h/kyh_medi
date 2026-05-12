@@ -70,7 +70,7 @@ class _MedicationFormScreenState extends State<MedicationFormScreen> {
           const Text('약 사진 (선택)', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
           const SizedBox(height: 8),
           if (_photoPath != null)
-            ClipRRect(borderRadius: BorderRadius.circular(8),
+            ClipRRect(borderRadius: AppRadius.smAll,
               child: Image.file(File(_photoPath!), height: 200, fit: BoxFit.cover)),
           const SizedBox(height: 8),
           Row(children: [

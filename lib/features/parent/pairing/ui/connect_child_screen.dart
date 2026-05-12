@@ -56,7 +56,7 @@ class _ConnectChildScreenState extends State<ConnectChildScreen> {
             padding: const EdgeInsets.symmetric(vertical: 32),
             decoration: BoxDecoration(
               color: AppColors.paper,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: AppRadius.mdAll,
               border: Border.all(color: AppColors.line, width: 2),
             ),
             child: Column(children: [

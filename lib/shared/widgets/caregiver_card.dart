@@ -14,9 +14,9 @@ class CaregiverCard extends StatelessWidget {
       color: AppColors.caregiverCard,
       elevation: 1,
       margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: const RoundedRectangleBorder(borderRadius: AppRadius.mdAll),
       child: InkWell(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: AppRadius.mdAll,
         onTap: onTap,
         child: Padding(padding: const EdgeInsets.all(16), child: child),
       ),
