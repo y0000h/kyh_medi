@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../shared/widgets/caregiver_card.dart';
 import '../../add_parent/ui/add_parent_screen.dart';
+import '../../auth/child_auth_service.dart';
 import '../../parent_detail/ui/parent_detail_screen.dart';
 import 'child_home_provider.dart';
 
@@ -13,17 +14,51 @@ class ChildHomeScreen extends StatefulWidget {
 }
 
 class _ChildHomeScreenState extends State<ChildHomeScreen> {
+  final _auth = ChildAuthService();
+
   @override
   void initState() {
     super.initState();
     Future.microtask(() => context.read<ChildHomeProvider>().load());
   }
 
+  Future<void> _confirmAndSignOut() async {
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('로그아웃'),
+        content: const Text('계정에서 로그아웃하시겠어요?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('취소'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('로그아웃'),
+          ),
+        ],
+      ),
+    );
+    if (ok == true) {
+      await _auth.signOut();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final p = context.watch<ChildHomeProvider>();
     return Scaffold(
-      appBar: AppBar(title: const Text('부모님 모니터링')),
+      appBar: AppBar(
+        title: const Text('부모님 모니터링'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: '로그아웃',
+            onPressed: _confirmAndSignOut,
+          ),
+        ],
+      ),
       body: RefreshIndicator(
         onRefresh: () => context.read<ChildHomeProvider>().load(),
         child: p.items.isEmpty && !p.loading

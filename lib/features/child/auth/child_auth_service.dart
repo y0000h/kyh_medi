@@ -15,25 +15,36 @@ class ChildAuthService {
     );
   }
 
-  Future<AuthResponse> signUpWithEmail({
+  /// 이메일로 6자리 OTP 요청. Supabase Auth가 메일로 코드 + 매직 링크 발송.
+  /// `shouldCreateUser: true` → 처음 보는 이메일이면 계정 자동 생성.
+  /// `emailRedirectTo` → 사용자가 메일의 링크 클릭하면 이 deep link로 앱이 열리며 자동 로그인.
+  ///
+  /// 이메일 본문에 6자리 코드를 표시하려면 Supabase Dashboard → Auth → Email Templates →
+  /// "Magic Link" 템플릿을 `{{ .Token }}` 변수가 보이는 형태로 갱신해야 함
+  /// (기본 템플릿은 링크만 노출). README 또는 docs 참조.
+  Future<void> sendEmailOtp({
     required String email,
-    required String password,
     String? displayName,
   }) async {
-    return SupabaseInit.client.auth.signUp(
+    await SupabaseInit.client.auth.signInWithOtp(
       email: email,
-      password: password,
-      data: {'display_name': displayName ?? ''},
+      shouldCreateUser: true,
+      emailRedirectTo: 'kyhmedi://auth-callback',
+      data: displayName != null && displayName.isNotEmpty
+          ? {'display_name': displayName}
+          : null,
     );
   }
 
-  Future<AuthResponse> signInWithEmail({
+  /// 메일로 받은 6자리 코드 검증. 성공 시 세션이 발급되고 onAuthStateChange가 fire.
+  Future<AuthResponse> verifyEmailOtp({
     required String email,
-    required String password,
+    required String token,
   }) async {
-    return SupabaseInit.client.auth.signInWithPassword(
+    return SupabaseInit.client.auth.verifyOTP(
       email: email,
-      password: password,
+      token: token,
+      type: OtpType.email,
     );
   }
 
