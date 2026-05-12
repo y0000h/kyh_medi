@@ -19,7 +19,10 @@ class _ConnectChildScreenState extends State<ConnectChildScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => context.read<PairingProvider>().loadPairings());
+    Future.microtask(() {
+      if (!mounted) return;
+      context.read<PairingProvider>().loadPairings();
+    });
   }
 
   void _startTicker() {

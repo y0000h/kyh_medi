@@ -20,7 +20,10 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => context.read<ChildHomeProvider>().load());
+    Future.microtask(() {
+      if (!mounted) return;
+      context.read<ChildHomeProvider>().load();
+    });
   }
 
   Future<void> _confirmAndSignOut() async {

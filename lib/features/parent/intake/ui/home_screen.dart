@@ -20,7 +20,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => context.read<IntakeProvider>().loadToday());
+    Future.microtask(() {
+      if (!mounted) return;
+      context.read<IntakeProvider>().loadToday();
+    });
     NotificationService.onTap = (payload) {
       // payload: "slot:<slotId>"
       if (!payload.startsWith('slot:')) return;

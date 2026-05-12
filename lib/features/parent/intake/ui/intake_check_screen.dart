@@ -47,15 +47,15 @@ class IntakeCheckScreen extends StatelessWidget {
             large: true,
             variant: SeniorButtonVariant.success,
             onPressed: () async {
+              final intake = context.read<IntakeProvider>();
               // 오늘 dayOffset = 0 retry +10/+20 알림 cancel
               final hash = NotificationIdEncoder.hashSlotId(slotView.slot.id);
               await NotificationService.cancelMany(
                 NotificationIdEncoder.idsForSlotInstance(slotHash: hash, dayOffset: 0),
               );
               final today = DateTime.now();
-              await context.read<IntakeProvider>()
-                  .markSlotTaken(slotView.slot.id,
-                      DateTime(today.year, today.month, today.day));
+              await intake.markSlotTaken(slotView.slot.id,
+                  DateTime(today.year, today.month, today.day));
               if (context.mounted) Navigator.pop(context);
             },
           ),
