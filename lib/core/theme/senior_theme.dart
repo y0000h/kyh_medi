@@ -1,5 +1,6 @@
 // lib/core/theme/senior_theme.dart
 import 'package:flutter/material.dart';
+import 'semantic_colors.dart';
 import 'tokens.dart';
 
 class SeniorTheme {
@@ -21,33 +22,9 @@ class SeniorTheme {
       colorScheme: colorScheme,
       scaffoldBackgroundColor: AppColors.bg,
       fontFamily: 'Pretendard',
+      extensions: const [AppSemanticColors.senior],
 
-      textTheme: const TextTheme(
-        displayLarge: TextStyle(
-          fontSize: AppSizes.displayFontSize, fontWeight: FontWeight.w800,
-          color: AppColors.ink, letterSpacing: -0.5,
-        ),
-        titleLarge: TextStyle(
-          fontSize: AppSizes.titleFontSize, fontWeight: FontWeight.w700,
-          color: AppColors.ink,
-        ),
-        bodyLarge: TextStyle(
-          fontSize: AppSizes.bodyFontSize, color: AppColors.ink,
-        ),
-        bodyMedium: TextStyle(
-          fontSize: AppSizes.bodyDenseFontSize, color: AppColors.ink,
-        ),
-        labelLarge: TextStyle(
-          fontSize: AppSizes.buttonFontSize, fontWeight: FontWeight.w700,
-        ),
-        labelMedium: TextStyle(
-          fontSize: 13, fontWeight: FontWeight.w700, letterSpacing: 0.6,
-          color: AppColors.inkMute,
-        ),
-        bodySmall: TextStyle(
-          fontSize: 14, color: AppColors.ink2,
-        ),
-      ),
+      textTheme: SeniorTypography.textTheme,
 
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.paper,

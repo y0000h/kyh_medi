@@ -1,5 +1,6 @@
 // lib/core/theme/caregiver_theme.dart
 import 'package:flutter/material.dart';
+import 'semantic_colors.dart';
 import 'tokens.dart';
 
 class CaregiverTheme {
@@ -21,33 +22,9 @@ class CaregiverTheme {
       colorScheme: colorScheme,
       scaffoldBackgroundColor: AppColors.caregiverBg,
       fontFamily: 'Pretendard',
+      extensions: const [AppSemanticColors.caregiver],
 
-      textTheme: const TextTheme(
-        titleLarge: TextStyle(
-          fontSize: AppSizes.caregiverTitleFontSize,
-          fontWeight: FontWeight.w700,
-          color: AppColors.caregiverInk,
-        ),
-        titleMedium: TextStyle(
-          fontSize: 18, fontWeight: FontWeight.w600,
-          color: AppColors.caregiverInk,
-        ),
-        bodyLarge: TextStyle(
-          fontSize: AppSizes.caregiverBodyFontSize,
-          color: AppColors.caregiverInk,
-        ),
-        bodyMedium: TextStyle(
-          fontSize: AppSizes.caregiverBodyFontSize,
-          color: AppColors.caregiverInk,
-        ),
-        labelLarge: TextStyle(
-          fontSize: AppSizes.caregiverButtonFontSize,
-          fontWeight: FontWeight.w600,
-        ),
-        bodySmall: TextStyle(
-          fontSize: 13, color: AppColors.caregiverInkMute,
-        ),
-      ),
+      textTheme: CaregiverTypography.textTheme,
 
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.caregiverCard,

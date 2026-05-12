@@ -77,7 +77,8 @@ class SettingsScreen extends StatelessWidget {
             SeniorButton(label: '광고 제거 결제',
                 onPressed: () => ads.purchaseRemoveAds(context)),
             const SizedBox(height: 12),
-            SeniorButton(label: '구매 복원', color: AppColors.inkMute,
+            SeniorButton(label: '구매 복원',
+                variant: SeniorButtonVariant.secondary,
                 onPressed: () => ads.restorePurchases()),
           ] else ...[
             const Card(child: Padding(padding: EdgeInsets.all(16),

@@ -45,7 +45,7 @@ class IntakeCheckScreen extends StatelessWidget {
           SeniorButton(
             label: '복용 완료',
             large: true,
-            color: AppColors.jade,
+            variant: SeniorButtonVariant.success,
             onPressed: () async {
               // 오늘 dayOffset = 0 retry +10/+20 알림 cancel
               final hash = NotificationIdEncoder.hashSlotId(slotView.slot.id);
