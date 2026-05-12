@@ -8,7 +8,8 @@ import 'home/ui/child_home_screen.dart';
 
 /// 자녀(보호자) 모드의 메인 셸 — 인증 상태 기반 라우팅.
 class ChildShell extends StatefulWidget {
-  const ChildShell({super.key});
+  final VoidCallback? onModeChange;
+  const ChildShell({super.key, this.onModeChange});
 
   @override
   State<ChildShell> createState() => _ChildShellState();
@@ -36,7 +37,7 @@ class _ChildShellState extends State<ChildShell> {
   @override
   Widget build(BuildContext context) {
     if (!_signedIn) {
-      return const ChildLoginScreen();
+      return ChildLoginScreen(onModeChange: widget.onModeChange);
     }
     return ChangeNotifierProvider(
       create: (_) => ChildHomeProvider(),

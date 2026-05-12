@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'core/hive/hive_init.dart';
 import 'core/supabase/parent_sync_service.dart';
+import 'core/supabase/supabase_init.dart';
 import 'core/theme/caregiver_theme.dart';
 import 'core/theme/senior_theme.dart';
 import 'features/child/child_shell.dart';
@@ -52,6 +53,15 @@ class _AppState extends State<App> {
   }
 
   void _completeOnboarding() => setState(() => _onboardingDone = true);
+
+  /// 모드 변경 — 모드 선택 화면으로 다시. 자녀가 로그인 상태이면 Supabase signOut도 같이.
+  Future<void> _resetMode() async {
+    if (SupabaseInit.client.auth.currentUser != null) {
+      await SupabaseInit.client.auth.signOut();
+    }
+    await _settingsRepo.setUserMode('');
+    if (mounted) setState(() => _mode = null);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +113,7 @@ class _AppState extends State<App> {
         title: 'KYH 약 알림',
         theme: SeniorTheme.light(),
         home: _onboardingDone
-            ? const ParentShell()
+            ? ParentShell(onModeChange: _resetMode)
             : OnboardingScreen(onDone: _completeOnboarding),
       ),
     );
@@ -114,7 +124,7 @@ class _AppState extends State<App> {
     return MaterialApp(
       title: 'KYH 약 알림 (자녀)',
       theme: CaregiverTheme.light(),
-      home: const ChildShell(),
+      home: ChildShell(onModeChange: _resetMode),
     );
   }
 }
