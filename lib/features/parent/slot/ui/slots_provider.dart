@@ -39,15 +39,20 @@ class SlotsProvider extends ChangeNotifier {
   }
 
   Future<void> remove(String slotId) async {
-    final hash = NotificationIdEncoder.hashSlotId(slotId);
-    for (int dayOffset = 0; dayOffset < 7; dayOffset++) {
-      await NotificationService.cancelMany(
-        NotificationIdEncoder.idsForSlotInstance(slotHash: hash, dayOffset: dayOffset),
-      );
-    }
+    // 데이터 먼저 — 알림 취소가 throw 해도 슬롯 삭제는 보장.
     await _repo.softDeleteSlot(slotId);
     _items = _repo.findActiveSlots();
     notifyListeners();
+    // 알림 취소는 best-effort. flutter_local_notifications가 release/R8 환경에서
+    // 캐시 역직렬화 실패로 throw하는 케이스가 있어 try/catch로 흡수.
+    try {
+      final hash = NotificationIdEncoder.hashSlotId(slotId);
+      for (int dayOffset = 0; dayOffset < 7; dayOffset++) {
+        await NotificationService.cancelMany(
+          NotificationIdEncoder.idsForSlotInstance(slotHash: hash, dayOffset: dayOffset),
+        );
+      }
+    } catch (_) {/* swallow */}
   }
 
   Future<void> _scheduleNotifications(TimeSlot slot) async {

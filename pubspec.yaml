@@ -1,7 +1,7 @@
 name: kyh_medi
 description: "한 알도, 잊지 않게. 어르신용 약 알림 + 자녀 모니터링."
 publish_to: 'none'
-version: 1.0.0+3
+version: 1.0.0+4
 
 environment:
   sdk: ^3.5.0

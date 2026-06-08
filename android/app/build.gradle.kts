@@ -64,6 +64,15 @@ android {
             } else {
                 signingConfigs.getByName("debug")
             }
+            // R8가 flutter_local_notifications 내부 Gson 타입 정보를 지워서
+            // cancel() 호출 시 "Missing type parameter."로 throw 됨.
+            // proguard-rules.pro로 plugin/Gson 클래스 keep.
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
         }
     }
 }
