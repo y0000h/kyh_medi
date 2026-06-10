@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +19,10 @@ class _AdBannerState extends State<AdBanner> {
   bool _loaded = false;
 
   // 테스트 단위 ID. Phase 13 출시 직전 실제 ID로 교체.
-  static const String _testUnitId = 'ca-app-pub-3940256099942544/6300978111';
+  // 구글 공식 배너 테스트 단위는 플랫폼별로 다르다.
+  static String get _testUnitId => Platform.isIOS
+      ? 'ca-app-pub-3940256099942544/2934735716' // iOS 배너 테스트
+      : 'ca-app-pub-3940256099942544/6300978111'; // Android 배너 테스트
 
   @override
   void initState() {

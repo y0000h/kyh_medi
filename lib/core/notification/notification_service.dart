@@ -13,7 +13,14 @@ class NotificationService {
 
   static Future<void> initialize() async {
     const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
-    const init = InitializationSettings(android: androidInit);
+    // iOS(Darwin)는 초기화 설정이 필수. 권한 요청은 requestPermissions()에서
+    // 별도로 처리하므로 여기서는 자동 요청을 끈다.
+    const iosInit = DarwinInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+    );
+    const init = InitializationSettings(android: androidInit, iOS: iosInit);
     await _plugin.initialize(
       init,
       onDidReceiveNotificationResponse: (details) {

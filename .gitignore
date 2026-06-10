@@ -52,3 +52,6 @@ android/key.properties
 android/app/upload-keystore.jks
 **/key.properties
 *.jks
+
+# Claude Code local config
+.claude/
