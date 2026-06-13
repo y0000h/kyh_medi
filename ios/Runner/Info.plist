@@ -10,6 +10,20 @@
 	<string>약 사진을 촬영해 등록하는 데 사용합니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>약 사진을 앨범에서 선택해 등록하는 데 사용합니다.</string>
+	<!-- Supabase 자녀 로그인 콜백 딥링크 (kyhmedi://auth-callback). Android 매니페스트와 동일 스킴. -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.kyh.medi.kyhMedi</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>kyhmedi</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
