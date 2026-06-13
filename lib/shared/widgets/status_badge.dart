@@ -42,10 +42,10 @@ class StatusBadge extends StatelessWidget {
       child: Text(
         label,
         style: const TextStyle(
-          fontFamily: 'Pretendard',
-          color: Colors.white,
+          fontFamily: 'NanumSquare',
+          color: Color(0xFF231811), // 밝은 액센트 배경 위 가독성 (dark ink)
           fontSize: 13,
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.w800,
           letterSpacing: 0.4,
         ),
       ),

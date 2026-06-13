@@ -7,34 +7,41 @@ class CaregiverTheme {
   static ThemeData light() {
     final colorScheme = ColorScheme.fromSeed(
       seedColor: AppColors.caregiverPrimary,
-      brightness: Brightness.light,
+      brightness: Brightness.dark,
     ).copyWith(
       primary: AppColors.caregiverPrimary,
-      onPrimary: Colors.white,
+      onPrimary: AppColors.caregiverOnPrimary,
+      secondary: AppColors.caregiverPrimaryDeep,
+      onSecondary: AppColors.caregiverOnPrimary,
       surface: AppColors.caregiverCard,
       onSurface: AppColors.caregiverInk,
+      surfaceContainerHighest: AppColors.caregiverSurfaceAlt,
+      onSurfaceVariant: AppColors.caregiverInk2,
       error: AppColors.caregiverDanger,
+      onError: AppColors.caregiverOnPrimary,
       outline: AppColors.caregiverBorder,
     );
 
     return ThemeData(
       useMaterial3: true,
+      brightness: Brightness.dark,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: AppColors.caregiverBg,
-      fontFamily: 'Pretendard',
+      canvasColor: AppColors.caregiverBg,
+      fontFamily: 'NanumSquare',
       extensions: const [AppSemanticColors.caregiver],
 
       textTheme: CaregiverTypography.textTheme,
 
       appBarTheme: const AppBarTheme(
-        backgroundColor: AppColors.caregiverCard,
+        backgroundColor: Colors.transparent,
         foregroundColor: AppColors.caregiverInk,
         elevation: 0,
         scrolledUnderElevation: 0,
         toolbarHeight: 56,
         centerTitle: false,
         titleTextStyle: TextStyle(
-          fontFamily: 'Pretendard',
+          fontFamily: 'NanumSquare',
           fontSize: 18, fontWeight: FontWeight.w700,
           color: AppColors.caregiverInk,
         ),
@@ -45,21 +52,21 @@ class CaregiverTheme {
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         margin: EdgeInsets.zero,
-        shape: RoundedRectangleBorder(borderRadius: AppRadius.mdAll),
-        shadowColor: Color(0x14000000),
+        shape: RoundedRectangleBorder(borderRadius: AppRadius.lgAll),
+        shadowColor: Color(0x33000000),
       ),
 
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           minimumSize: const Size.fromHeight(AppSizes.caregiverMinButtonHeight),
           backgroundColor: AppColors.caregiverPrimary,
-          foregroundColor: Colors.white,
+          foregroundColor: AppColors.caregiverOnPrimary,
           elevation: 0,
           textStyle: const TextStyle(
             fontSize: AppSizes.caregiverButtonFontSize,
             fontWeight: FontWeight.w600,
           ),
-          shape: const RoundedRectangleBorder(borderRadius: AppRadius.mdAll),
+          shape: const RoundedRectangleBorder(borderRadius: AppRadius.pillAll),
         ),
       ),
 
@@ -68,7 +75,16 @@ class CaregiverTheme {
           minimumSize: const Size.fromHeight(AppSizes.caregiverMinButtonHeight),
           foregroundColor: AppColors.caregiverPrimary,
           side: const BorderSide(color: AppColors.caregiverPrimary, width: 1.5),
-          shape: const RoundedRectangleBorder(borderRadius: AppRadius.mdAll),
+          shape: const RoundedRectangleBorder(borderRadius: AppRadius.pillAll),
+        ),
+      ),
+
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          minimumSize: const Size.fromHeight(AppSizes.caregiverMinButtonHeight),
+          backgroundColor: AppColors.caregiverPrimary,
+          foregroundColor: AppColors.caregiverOnPrimary,
+          shape: const RoundedRectangleBorder(borderRadius: AppRadius.pillAll),
         ),
       ),
 
@@ -99,7 +115,7 @@ class CaregiverTheme {
       chipTheme: const ChipThemeData(
         shape: StadiumBorder(),
         labelStyle: TextStyle(
-          fontFamily: 'Pretendard', fontSize: 12, fontWeight: FontWeight.w600,
+          fontFamily: 'NanumSquare', fontSize: 12, fontWeight: FontWeight.w600,
           color: Colors.white, letterSpacing: 0.3,
         ),
         padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 4),
@@ -107,19 +123,41 @@ class CaregiverTheme {
 
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: AppColors.caregiverCard,
-        indicatorColor: AppColors.caregiverPrimary.withValues(alpha: 0.12),
+        indicatorColor: AppColors.caregiverPrimary.withValues(alpha: 0.18),
         labelTextStyle: WidgetStateProperty.all(const TextStyle(
-          fontFamily: 'Pretendard',
+          fontFamily: 'NanumSquare',
           fontSize: 12, fontWeight: FontWeight.w600,
           color: AppColors.caregiverInk,
         )),
         height: 64,
       ),
 
+      popupMenuTheme: const PopupMenuThemeData(
+        color: AppColors.caregiverSurfaceAlt,
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(borderRadius: AppRadius.lgAll),
+        textStyle: TextStyle(fontFamily: 'NanumSquare', color: AppColors.caregiverInk, fontSize: 15),
+      ),
+
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: AppColors.caregiverCard,
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
+        ),
+      ),
+
+      snackBarTheme: const SnackBarThemeData(
+        backgroundColor: AppColors.caregiverSurfaceAlt,
+        contentTextStyle: TextStyle(fontFamily: 'NanumSquare', color: AppColors.caregiverInk, fontSize: 15),
+        behavior: SnackBarBehavior.floating,
+      ),
+
       dialogTheme: const DialogThemeData(
         backgroundColor: AppColors.caregiverCard,
+        surfaceTintColor: Colors.transparent,
         elevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: AppRadius.mdAll),
+        shape: RoundedRectangleBorder(borderRadius: AppRadius.xlAll),
       ),
     );
   }

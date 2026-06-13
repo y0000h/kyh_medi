@@ -83,6 +83,7 @@ class _HistoryCalendarScreenState extends State<HistoryCalendarScreen> {
         : (_byDay[DateTime(_selected!.year, _selected!.month, _selected!.day)] ?? const []);
 
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(title: const Text('복용 이력')),
       body: Column(children: [
         TableCalendar(

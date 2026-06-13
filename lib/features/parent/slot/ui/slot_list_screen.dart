@@ -51,6 +51,7 @@ class SlotListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final slots = context.watch<SlotsProvider>().items;
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(title: const Text('시간 관리')),
       body: slots.isEmpty
           ? const Center(child: Text('등록된 슬롯이 없어요', style: TextStyle(fontSize: 20)))

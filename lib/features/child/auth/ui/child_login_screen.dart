@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../../../core/theme/tokens.dart';
 import '../child_auth_service.dart';
 
 /// 자녀 로그인 화면 — Google OAuth + 이메일 OTP 2탭.
@@ -117,6 +118,7 @@ class _ChildLoginScreenState extends State<ChildLoginScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
         leading: widget.onModeChange == null
             ? null
@@ -128,12 +130,18 @@ class _ChildLoginScreenState extends State<ChildLoginScreen>
         title: const Text('자녀 로그인'),
         bottom: TabBar(
           controller: _tab,
+          indicatorColor: AppColors.caregiverPrimary,
+          labelColor: AppColors.caregiverPrimary,
+          unselectedLabelColor: AppColors.caregiverInkMute,
           tabs: const [Tab(text: 'Google'), Tab(text: '이메일')],
         ),
       ),
-      body: TabBarView(
-        controller: _tab,
-        children: [_googleTab(), _emailTab()],
+      body: Container(
+        decoration: const BoxDecoration(gradient: AppGradients.caregiverBg),
+        child: TabBarView(
+          controller: _tab,
+          children: [_googleTab(), _emailTab()],
+        ),
       ),
     );
   }
@@ -143,7 +151,7 @@ class _ChildLoginScreenState extends State<ChildLoginScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.family_restroom, size: 80, color: Colors.blueAccent),
+            const Icon(Icons.family_restroom, size: 80, color: AppColors.caregiverPrimary),
             const SizedBox(height: 24),
             const Text('Google 계정으로 빠르게 시작',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
@@ -156,7 +164,7 @@ class _ChildLoginScreenState extends State<ChildLoginScreen>
             if (_error != null && _tab.index == 0)
               Padding(
                 padding: const EdgeInsets.only(top: 16),
-                child: Text(_error!, style: const TextStyle(color: Colors.red)),
+                child: Text(_error!, style: const TextStyle(color: AppColors.caregiverDanger)),
               ),
           ],
         ),
@@ -171,12 +179,12 @@ class _ChildLoginScreenState extends State<ChildLoginScreen>
             if (_info != null)
               Padding(
                 padding: const EdgeInsets.only(top: 16),
-                child: Text(_info!, style: const TextStyle(color: Colors.green)),
+                child: Text(_info!, style: const TextStyle(color: AppColors.caregiverPrimary)),
               ),
             if (_error != null && _tab.index == 1)
               Padding(
                 padding: const EdgeInsets.only(top: 16),
-                child: Text(_error!, style: const TextStyle(color: Colors.red)),
+                child: Text(_error!, style: const TextStyle(color: AppColors.caregiverDanger)),
               ),
           ],
         ),

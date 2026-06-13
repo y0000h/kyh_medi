@@ -7,34 +7,41 @@ class SeniorTheme {
   static ThemeData light() {
     final colorScheme = ColorScheme.fromSeed(
       seedColor: AppColors.pillDeep,
-      brightness: Brightness.light,
+      brightness: Brightness.dark,
     ).copyWith(
       primary: AppColors.pillDeep,
-      onPrimary: Colors.white,
+      onPrimary: AppColors.onPrimary,
+      secondary: AppColors.primaryDeep,
+      onSecondary: AppColors.onPrimary,
       surface: AppColors.paper,
       onSurface: AppColors.ink,
+      surfaceContainerHighest: AppColors.paper2,
+      onSurfaceVariant: AppColors.ink2,
       error: AppColors.care,
+      onError: AppColors.onPrimary,
       outline: AppColors.line,
     );
 
     return ThemeData(
       useMaterial3: true,
+      brightness: Brightness.dark,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: AppColors.bg,
-      fontFamily: 'Pretendard',
+      canvasColor: AppColors.bg,
+      fontFamily: 'NanumSquare',
       extensions: const [AppSemanticColors.senior],
 
       textTheme: SeniorTypography.textTheme,
 
       appBarTheme: const AppBarTheme(
-        backgroundColor: AppColors.paper,
+        backgroundColor: Colors.transparent,
         foregroundColor: AppColors.ink,
         elevation: 0,
         scrolledUnderElevation: 0,
         toolbarHeight: 64,
         centerTitle: false,
         titleTextStyle: TextStyle(
-          fontFamily: 'Pretendard',
+          fontFamily: 'NanumSquare',
           fontSize: 22, fontWeight: FontWeight.w800, color: AppColors.ink,
         ),
       ),
@@ -44,20 +51,20 @@ class SeniorTheme {
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         margin: EdgeInsets.zero,
-        shape: RoundedRectangleBorder(borderRadius: AppRadius.lgAll),
-        shadowColor: Color(0x14000000),
+        shape: RoundedRectangleBorder(borderRadius: AppRadius.xlAll),
+        shadowColor: Color(0x33000000),
       ),
 
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           minimumSize: const Size.fromHeight(AppSizes.minButtonHeight),
           backgroundColor: AppColors.pillDeep,
-          foregroundColor: Colors.white,
+          foregroundColor: AppColors.onPrimary,
           elevation: 0,
           textStyle: const TextStyle(
             fontSize: AppSizes.buttonFontSize, fontWeight: FontWeight.w700,
           ),
-          shape: const RoundedRectangleBorder(borderRadius: AppRadius.mdAll),
+          shape: const RoundedRectangleBorder(borderRadius: AppRadius.pillAll),
         ),
       ),
 
@@ -69,7 +76,7 @@ class SeniorTheme {
           textStyle: const TextStyle(
             fontSize: AppSizes.buttonFontSize, fontWeight: FontWeight.w700,
           ),
-          shape: const RoundedRectangleBorder(borderRadius: AppRadius.mdAll),
+          shape: const RoundedRectangleBorder(borderRadius: AppRadius.pillAll),
         ),
       ),
 
@@ -86,8 +93,8 @@ class SeniorTheme {
         style: FilledButton.styleFrom(
           minimumSize: const Size.fromHeight(AppSizes.minButtonHeight),
           backgroundColor: AppColors.pillDeep,
-          foregroundColor: Colors.white,
-          shape: const RoundedRectangleBorder(borderRadius: AppRadius.mdAll),
+          foregroundColor: AppColors.onPrimary,
+          shape: const RoundedRectangleBorder(borderRadius: AppRadius.pillAll),
         ),
       ),
 
@@ -121,7 +128,7 @@ class SeniorTheme {
       chipTheme: const ChipThemeData(
         shape: StadiumBorder(),
         labelStyle: TextStyle(
-          fontFamily: 'Pretendard', fontSize: 13, fontWeight: FontWeight.w700,
+          fontFamily: 'NanumSquare', fontSize: 13, fontWeight: FontWeight.w700,
           color: Colors.white, letterSpacing: 0.4,
         ),
         padding: EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: 4),
@@ -129,15 +136,15 @@ class SeniorTheme {
 
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: AppColors.paper,
-        indicatorColor: AppColors.pillDeep.withValues(alpha: 0.12),
+        indicatorColor: AppColors.pillDeep.withValues(alpha: 0.18),
         labelTextStyle: WidgetStateProperty.all(const TextStyle(
-          fontFamily: 'Pretendard',
+          fontFamily: 'NanumSquare',
           fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.ink,
         )),
         iconTheme: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
           return IconThemeData(
-            color: selected ? AppColors.pillDeep : AppColors.ink2,
+            color: selected ? AppColors.pillDeep : AppColors.inkMute,
             size: 28,
           );
         }),
@@ -145,17 +152,32 @@ class SeniorTheme {
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
       ),
 
+      popupMenuTheme: const PopupMenuThemeData(
+        color: AppColors.paper2,
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(borderRadius: AppRadius.lgAll),
+        textStyle: TextStyle(fontFamily: 'NanumSquare', color: AppColors.ink, fontSize: 16),
+      ),
+
       bottomSheetTheme: const BottomSheetThemeData(
         backgroundColor: AppColors.paper,
+        surfaceTintColor: Colors.transparent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
         ),
       ),
 
+      snackBarTheme: const SnackBarThemeData(
+        backgroundColor: AppColors.paper2,
+        contentTextStyle: TextStyle(fontFamily: 'NanumSquare', color: AppColors.ink, fontSize: 16),
+        behavior: SnackBarBehavior.floating,
+      ),
+
       dialogTheme: const DialogThemeData(
         backgroundColor: AppColors.paper,
+        surfaceTintColor: Colors.transparent,
         elevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: AppRadius.lgAll),
+        shape: RoundedRectangleBorder(borderRadius: AppRadius.xlAll),
       ),
     );
   }

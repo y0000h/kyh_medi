@@ -13,6 +13,7 @@ class MedicationListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final meds = context.watch<MedicationsProvider>().items;
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(title: const Text('약 관리')),
       body: Column(children: [
         Expanded(child: meds.isEmpty

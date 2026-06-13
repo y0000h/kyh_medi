@@ -53,6 +53,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
   Widget build(BuildContext context) {
     final p = context.watch<ChildHomeProvider>();
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: const Text('부모님 모니터링'),
         actions: [
@@ -63,7 +64,9 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
           ),
         ],
       ),
-      body: RefreshIndicator(
+      body: Container(
+        decoration: const BoxDecoration(gradient: AppGradients.caregiverBg),
+        child: RefreshIndicator(
         onRefresh: () => context.read<ChildHomeProvider>().load(),
         child: p.items.isEmpty && !p.loading
             ? const Center(
@@ -95,11 +98,11 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
                             width: 56,
                             height: 56,
                             decoration: BoxDecoration(
-                              color: Colors.blue.shade50,
+                              color: AppColors.caregiverPrimary.withValues(alpha: 0.18),
                               borderRadius: AppRadius.pillAll,
                             ),
                             child: const Icon(Icons.person,
-                                size: 32, color: Colors.blueAccent),
+                                size: 32, color: AppColors.caregiverPrimary),
                           ),
                           const SizedBox(width: 16),
                           Expanded(
@@ -126,6 +129,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
                     ),
                 ],
               ),
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {

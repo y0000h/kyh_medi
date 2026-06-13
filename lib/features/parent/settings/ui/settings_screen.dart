@@ -39,6 +39,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final ads = context.watch<AdsProvider>();
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(title: const Text('설정')),
       body: ListView(
         padding: const EdgeInsets.all(AppSizes.padding),
