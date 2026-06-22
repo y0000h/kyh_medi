@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' show SignOutScope;
 import 'core/hive/hive_init.dart';
 import 'core/supabase/parent_sync_service.dart';
 import 'core/supabase/supabase_init.dart';
@@ -67,7 +68,8 @@ class _AppState extends State<App> {
   /// 모드 변경 — 모드 선택 화면으로 다시. 자녀가 로그인 상태이면 Supabase signOut도 같이.
   Future<void> _resetMode() async {
     if (SupabaseInit.client.auth.currentUser != null) {
-      await SupabaseInit.client.auth.signOut();
+      // local scope: 모드 변경 시 빈 Safari(로그아웃 URL) 안 뜨도록.
+      await SupabaseInit.client.auth.signOut(scope: SignOutScope.local);
     }
     await _settingsRepo.setUserMode('');
     if (mounted) setState(() => _mode = null);

@@ -61,7 +61,10 @@ class ChildAuthService {
     });
   }
 
-  Future<void> signOut() => SupabaseInit.client.auth.signOut();
+  // local scope: 서버 로그아웃 URL을 브라우저로 열지 않고 기기 세션만 종료
+  // (global 기본값은 iOS에서 빈 Safari 페이지가 잠깐 뜸).
+  Future<void> signOut() =>
+      SupabaseInit.client.auth.signOut(scope: SignOutScope.local);
 
   Stream<AuthState> get onAuthStateChange =>
       SupabaseInit.client.auth.onAuthStateChange;

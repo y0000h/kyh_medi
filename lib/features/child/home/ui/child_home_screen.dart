@@ -8,7 +8,9 @@ import '../../parent_detail/ui/parent_detail_screen.dart';
 import 'child_home_provider.dart';
 
 class ChildHomeScreen extends StatefulWidget {
-  const ChildHomeScreen({super.key});
+  /// 모드 선택 화면으로 돌아가기(로그아웃 포함). null이면 버튼 숨김.
+  final VoidCallback? onModeChange;
+  const ChildHomeScreen({super.key, this.onModeChange});
 
   @override
   State<ChildHomeScreen> createState() => _ChildHomeScreenState();
@@ -49,12 +51,40 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
     }
   }
 
+  Future<void> _confirmModeChange() async {
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('모드 변경'),
+        content: const Text('모드 선택 화면으로 돌아갑니다.\n로그아웃된 후 다시 선택할 수 있어요.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('취소'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('변경'),
+          ),
+        ],
+      ),
+    );
+    if (ok == true) widget.onModeChange?.call();
+  }
+
   @override
   Widget build(BuildContext context) {
     final p = context.watch<ChildHomeProvider>();
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
+        leading: widget.onModeChange == null
+            ? null
+            : IconButton(
+                icon: const Icon(Icons.swap_horiz),
+                tooltip: '모드 변경',
+                onPressed: _confirmModeChange,
+              ),
         title: const Text('부모님 모니터링'),
         actions: [
           IconButton(

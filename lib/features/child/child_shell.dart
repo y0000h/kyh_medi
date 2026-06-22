@@ -41,7 +41,7 @@ class _ChildShellState extends State<ChildShell> {
     }
     return ChangeNotifierProvider(
       create: (_) => ChildHomeProvider(),
-      child: const ChildHomeScreen(),
+      child: ChildHomeScreen(onModeChange: widget.onModeChange),
     );
   }
 }
