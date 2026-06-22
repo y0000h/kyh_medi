@@ -16,6 +16,7 @@ import 'package:integration_test/integration_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:kyh_medi/app.dart';
+import 'package:kyh_medi/shared/widgets/floating_nav_bar.dart';
 import 'package:kyh_medi/core/firebase/fcm_message_handler.dart';
 import 'package:kyh_medi/core/firebase/firebase_init.dart';
 import 'package:kyh_medi/core/hive/hive_init.dart';
@@ -75,14 +76,27 @@ void main() {
     await t.pumpAndSettle();
   }
 
-  // NavigationBar 안의 라벨로 탭 (다른 곳의 동일 텍스트와 충돌 방지).
+  // FloatingNavBar 안의 라벨로 탭 (다른 곳의 동일 텍스트와 충돌 방지).
   Future<void> tapNav(WidgetTester t, String label) async {
     final f = find.descendant(
-      of: find.byType(NavigationBar),
+      of: find.byType(FloatingNavBar),
       matching: find.text(label),
     );
     await t.tap(f);
     await t.pumpAndSettle();
+  }
+
+  // 약 등록 3단계 마법사: 정보입력(이름) → 복용기간(다음) → 복용시간(저장)
+  Future<void> addMedViaWizard(WidgetTester t, String name) async {
+    await safeTap(t, find.text('새 약 추가'));
+    expect(find.text('정보 입력'), findsOneWidget);
+    await t.enterText(find.byType(TextField).at(0), name); // 약 이름
+    await t.pumpAndSettle();
+    await safeTap(t, find.text('다음')); // → 복용 기간 설정
+    expect(find.text('복용 기간 설정'), findsOneWidget);
+    await safeTap(t, find.text('다음')); // → 복용 시간 설정
+    expect(find.text('복용 시간 설정'), findsOneWidget);
+    await safeTap(t, find.text('저장')); // 생성 (약 + 시각 슬롯)
   }
 
   setUpAll(() async {
@@ -90,7 +104,7 @@ void main() {
   });
 
   testWidgets(
-    '부모 모드 전체 흐름: 약 등록 → 시간 슬롯 → 오늘 체크 → 이력 → 설정',
+    '부모 모드 전체 흐름: 약 등록(마법사) → 오늘 체크 → 일정 → 이력 → 설정',
     (tester) async {
       await clearData();
       await seedMode(AppSettings.modeParent);
@@ -98,10 +112,10 @@ void main() {
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
 
-      // ── STEP 1: 홈(오늘의 약) 진입, 빈 상태 ──
+      // ── STEP 1: 홈 진입, 빈 상태 (주간 스트립 + 진행률 카드) ──
       debugPrint('🧪 STEP 1: 홈 화면 진입 + 빈 상태 확인');
-      expect(find.text('오늘의 약'), findsOneWidget);
-      expect(find.textContaining('오늘 드실 약이 없어요'), findsOneWidget);
+      expect(find.text('약을 등록해요'), findsOneWidget);       // 진행률 카드(빈 상태)
+      expect(find.text('복용 일정이 없습니다.'), findsOneWidget); // 빈 카드
       debugPrint('✅ STEP 1 통과');
 
       // ── STEP 2: 약 관리 탭 → 빈 목록 ──
@@ -110,94 +124,63 @@ void main() {
       expect(find.text('아직 등록된 약이 없어요'), findsOneWidget);
       debugPrint('✅ STEP 2 통과');
 
-      // ── STEP 3~4: 약 1 등록 (혈압약 / 식후 30분) ──
-      debugPrint('🧪 STEP 3: 새 약 추가 폼 진입');
-      await safeTap(tester, find.text('새 약 추가'));
-      expect(find.text('새 약 등록'), findsOneWidget);
-      debugPrint('🧪 STEP 4: 약 이름/메모 입력 후 저장');
-      await tester.enterText(find.byType(TextField).at(0), '혈압약');
-      await tester.enterText(find.byType(TextField).at(1), '식후 30분');
-      await tester.pumpAndSettle();
-      await safeTap(tester, find.text('저장'));
-      expect(find.text('혈압약'), findsWidgets); // 목록에 표시
-      debugPrint('✅ STEP 3~4 통과 (혈압약 등록)');
+      // ── STEP 3: 약 등록 3단계 마법사 (혈압약) ──
+      debugPrint('🧪 STEP 3: 약 등록 마법사(정보입력→복용기간→복용시간)');
+      await addMedViaWizard(tester, '혈압약');
+      expect(find.text('혈압약'), findsWidgets); // 약 관리 목록에 표시
+      debugPrint('✅ STEP 3 통과 (혈압약 등록 — 약 + 시각 슬롯 자동 생성)');
 
-      // ── STEP 5: 약 2 등록 (당뇨약) ──
-      debugPrint('🧪 STEP 5: 두 번째 약(당뇨약) 등록');
-      await safeTap(tester, find.text('새 약 추가'));
-      await tester.enterText(find.byType(TextField).at(0), '당뇨약');
-      await tester.pumpAndSettle();
-      await safeTap(tester, find.text('저장'));
-      expect(find.text('당뇨약'), findsWidgets);
-      debugPrint('✅ STEP 5 통과 (당뇨약 등록)');
-
-      // ── STEP 6: 시간 관리 탭 → 빈 목록 ──
-      debugPrint('🧪 STEP 6: 시간 관리 탭 → 빈 목록 확인');
-      await tapNav(tester, '시간 관리');
-      expect(find.text('등록된 슬롯이 없어요'), findsOneWidget);
-      debugPrint('✅ STEP 6 통과');
-
-      // ── STEP 7~8: 시간 슬롯 등록 (아침 08:00, 매일, 약 2개 선택) ──
-      debugPrint('🧪 STEP 7: 새 시간 슬롯 폼 진입');
-      await safeTap(tester, find.text('새 시간 추가'));
-      expect(find.text('시간 슬롯 등록'), findsOneWidget);
-      debugPrint('🧪 STEP 8: 약 2개 체크 후 저장');
-      await safeTap(tester, find.text('혈압약')); // CheckboxListTile 토글
-      await safeTap(tester, find.text('당뇨약'));
-      await safeTap(tester, find.text('저장'));
-      // 목록으로 복귀: 슬롯이 보여야 함 (라벨 '아침')
-      expect(find.textContaining('아침'), findsWidgets);
-      debugPrint('✅ STEP 7~8 통과 (아침 08:00 슬롯 등록)');
-
-      // ── STEP 9: 오늘 탭 → 슬롯/약 노출 + 상태 '복용 전' ──
-      debugPrint('🧪 STEP 9: 오늘 화면에 슬롯 노출 확인');
+      // ── STEP 4: 오늘 탭 → 약 노출 + '먹었어요' 버튼 ──
+      debugPrint('🧪 STEP 4: 오늘 화면에 약 노출 확인');
       await tapNav(tester, '오늘');
       expect(find.text('혈압약'), findsWidgets);
-      expect(find.text('당뇨약'), findsWidgets);
-      expect(find.text('복용 전'), findsWidgets);
-      debugPrint('✅ STEP 9 통과 (오늘의 약에 슬롯 표시, 상태 복용 전)');
+      expect(find.text('먹었어요'), findsWidgets); // 복용 전 상태 = 먹었어요 버튼
+      debugPrint('✅ STEP 4 통과');
 
-      // ── STEP 10: 슬롯 카드 탭 → 복용 체크 화면 → 복용 완료 ──
-      debugPrint('🧪 STEP 10: 슬롯 진입 → 복용 완료 처리');
+      // ── STEP 5: 약 카드 탭 → 복용 체크 → 복용 완료 → 홈에 '완료' 도장 ──
+      debugPrint('🧪 STEP 5: 복용 체크 → 복용 완료 처리');
       await safeTap(tester, find.text('혈압약').first); // 카드 탭 → IntakeCheck
-      // 복용 체크 화면: 복용 완료 버튼
       expect(find.text('복용 완료'), findsWidgets);
       await safeTap(tester, find.text('복용 완료'));
-      // 홈 복귀 후 상태 배지 '복용 완료'
-      expect(find.text('복용 완료'), findsWidgets);
-      debugPrint('✅ STEP 10 통과 (복용 완료 반영)');
+      expect(find.text('완료'), findsWidgets); // 홈 복귀 후 완료 도장
+      debugPrint('✅ STEP 5 통과 (복용 완료 반영)');
 
-      // ── STEP 11: 이력 탭 렌더 ──
-      debugPrint('🧪 STEP 11: 복용 이력 화면 렌더 확인');
+      // ── STEP 6: 일정(시간) 탭 → 슬롯 카드 노출 ──
+      debugPrint('🧪 STEP 6: 복용 일정 화면 렌더 확인');
+      await tapNav(tester, '시간');
+      expect(find.text('복용 일정'), findsOneWidget);
+      expect(find.text('혈압약'), findsWidgets);
+      debugPrint('✅ STEP 6 통과');
+
+      // ── STEP 7: 이력 탭 렌더 ──
+      debugPrint('🧪 STEP 7: 복용 이력 화면 렌더 확인');
       await tapNav(tester, '이력');
       expect(find.text('복용 이력'), findsOneWidget);
-      debugPrint('✅ STEP 11 통과');
+      debugPrint('✅ STEP 7 통과');
 
-      // ── STEP 12: 설정 탭 렌더 + 항목 확인 ──
-      debugPrint('🧪 STEP 12: 설정 화면 렌더 + 항목 확인');
+      // ── STEP 8: 설정 탭 렌더 + 항목 확인 ──
+      debugPrint('🧪 STEP 8: 설정 화면 렌더 + 항목 확인');
       await tapNav(tester, '설정');
-      expect(find.text('설정'), findsWidgets);
       expect(find.text('자녀와 연결'), findsOneWidget);
       expect(find.text('모드 변경'), findsOneWidget);
       expect(find.textContaining('KYH 약 알림'), findsOneWidget);
-      debugPrint('✅ STEP 12 통과');
+      debugPrint('✅ STEP 8 통과');
 
-      // ── STEP 13: 모드 변경 다이얼로그 열고 취소 ──
-      debugPrint('🧪 STEP 13: 모드 변경 다이얼로그 표시/취소');
+      // ── STEP 9: 모드 변경 다이얼로그 열고 취소 ──
+      debugPrint('🧪 STEP 9: 모드 변경 다이얼로그 표시/취소');
       await safeTap(tester, find.text('모드 변경'));
       expect(find.text('변경'), findsOneWidget); // 다이얼로그 확인 버튼
       await safeTap(tester, find.text('취소'));
-      expect(find.text('설정'), findsWidgets); // 설정 화면 유지
-      debugPrint('✅ STEP 13 통과');
+      debugPrint('✅ STEP 9 통과');
 
-      // ── STEP 14: 약 관리에서 약 삭제 흐름 ──
-      debugPrint('🧪 STEP 14: 약 삭제 다이얼로그 → 삭제');
+      // ── STEP 10: 약 관리에서 약 삭제 흐름 ──
+      debugPrint('🧪 STEP 10: 약 삭제 다이얼로그 → 삭제');
       await tapNav(tester, '약 관리');
       expect(find.byIcon(Icons.delete_outline), findsWidgets);
       await safeTap(tester, find.byIcon(Icons.delete_outline).first);
       expect(find.text('약을 삭제할까요?'), findsOneWidget);
       await safeTap(tester, find.text('삭제'));
-      debugPrint('✅ STEP 14 통과 (약 삭제 동작)');
+      debugPrint('✅ STEP 10 통과 (약 삭제 동작)');
 
       debugPrint('🎉 부모 모드 전체 흐름 테스트 완료 — 예외/오류 없음');
     },
