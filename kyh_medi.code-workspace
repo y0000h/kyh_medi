@@ -1,0 +1,16 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "explorer.compactFolders": false,
+    "dart.previewFlutterUiGuides": true,
+    "files.exclude": {
+      "**/.dart_tool": true,
+      "**/.idea": true,
+      "**/build": true
+    }
+  }
+}
