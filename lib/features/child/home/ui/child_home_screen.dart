@@ -55,8 +55,8 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
     final ok = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('모드 변경'),
-        content: const Text('모드 선택 화면으로 돌아갑니다.\n로그아웃된 후 다시 선택할 수 있어요.'),
+        title: const Text('처음 화면으로'),
+        content: const Text('모드 선택 화면으로 나갈까요?\n로그아웃된 후 다시 선택할 수 있어요.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -64,7 +64,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('변경'),
+            child: const Text('나가기'),
           ),
         ],
       ),
@@ -81,8 +81,8 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
         leading: widget.onModeChange == null
             ? null
             : IconButton(
-                icon: const Icon(Icons.swap_horiz),
-                tooltip: '모드 변경',
+                icon: const Icon(Icons.arrow_back),
+                tooltip: '처음 화면',
                 onPressed: _confirmModeChange,
               ),
         title: const Text('부모님 모니터링'),
