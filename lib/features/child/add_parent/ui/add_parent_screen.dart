@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/theme/tokens.dart';
 import '../../../../core/supabase/supabase_init.dart';
 
 /// 자녀가 부모 페어링 코드(6자리)를 입력 → `redeem_pairing_code` RPC 호출.
@@ -48,53 +49,90 @@ class _AddParentScreenState extends State<AddParentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('부모님 추가')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Text(
-              '부모님 폰의 "자녀와 연결" 화면에서 받은 6자리 코드를 입력해주세요.',
-              style: TextStyle(fontSize: 16),
-            ),
-            const SizedBox(height: 24),
-            TextField(
-              controller: _code,
-              keyboardType: TextInputType.number,
-              maxLength: 6,
-              style: const TextStyle(
-                fontSize: 32,
-                letterSpacing: 8,
-                fontFamily: 'monospace',
+      backgroundColor: AppColors.caregiverBg,
+      appBar: AppBar(
+        title: const Text('부모님 추가', style: TextStyle(fontWeight: FontWeight.w800)),
+        toolbarHeight: 64,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.xl, AppSpacing.lg, AppSpacing.xl, AppSpacing.xl,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // 안내 카드
+              Container(
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                decoration: BoxDecoration(
+                  color: AppColors.caregiverPrimary.withValues(alpha: 0.10),
+                  borderRadius: AppRadius.lgAll,
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.info_outline_rounded, color: AppColors.caregiverPrimaryDeep),
+                    const SizedBox(width: AppSpacing.md),
+                    const Expanded(
+                      child: Text(
+                        '부모님 폰의 "자녀와 연결" 화면에서 받은\n6자리 코드를 입력해주세요.',
+                        style: TextStyle(fontSize: 14, color: AppColors.caregiverInk2, height: 1.4),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              textAlign: TextAlign.center,
-              decoration: const InputDecoration(
-                labelText: '6자리 코드',
-                counterText: '',
-                border: OutlineInputBorder(),
+              const SizedBox(height: AppSpacing.xxl),
+              const Text('6자리 코드',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.caregiverInk2)),
+              const SizedBox(height: AppSpacing.sm),
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.caregiverCard,
+                  borderRadius: AppRadius.lgAll,
+                  border: Border.all(color: AppColors.caregiverBorder, width: 1),
+                ),
+                child: TextField(
+                  controller: _code,
+                  keyboardType: TextInputType.number,
+                  maxLength: 6,
+                  style: const TextStyle(
+                    fontSize: 34, letterSpacing: 12, fontWeight: FontWeight.w800,
+                    color: AppColors.caregiverInk,
+                  ),
+                  textAlign: TextAlign.center,
+                  decoration: const InputDecoration(
+                    counterText: '',
+                    hintText: '••••••',
+                    hintStyle: TextStyle(letterSpacing: 12, color: AppColors.caregiverInkMute),
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(vertical: 18),
+                  ),
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _label,
-              decoration: const InputDecoration(
-                labelText: '부모님 별칭',
-                hintText: '예: 엄마, 아빠',
-                border: OutlineInputBorder(),
+              const SizedBox(height: AppSpacing.xl),
+              const Text('부모님 별칭',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.caregiverInk2)),
+              const SizedBox(height: AppSpacing.sm),
+              TextField(
+                controller: _label,
+                decoration: const InputDecoration(hintText: '예: 엄마, 아빠'),
               ),
-            ),
-            const SizedBox(height: 24),
-            if (_error != null)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: Text(_error!, style: const TextStyle(color: Colors.red)),
+              if (_error != null) ...[
+                const SizedBox(height: AppSpacing.lg),
+                Text(_error!, style: const TextStyle(color: AppColors.caregiverDanger, fontSize: 14)),
+              ],
+              const SizedBox(height: AppSpacing.xxl),
+              SizedBox(
+                height: 56,
+                child: FilledButton(
+                  onPressed: _loading ? null : _redeem,
+                  child: Text(_loading ? '연결 중…' : '연결하기',
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+                ),
               ),
-            ElevatedButton(
-              onPressed: _loading ? null : _redeem,
-              child: Text(_loading ? '연결 중...' : '연결하기'),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

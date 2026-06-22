@@ -5,8 +5,12 @@
 //   ② 복용 기간 — 시작일 / 종료일 (휠 날짜 피커)
 //   ③ 복용 시간 — 알림 토글 / 복용 시각 리스트
 // 완료 시 Medication 생성 + 시각마다 TimeSlot 생성(약 연결, 알림 토글 반영).
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../slot/domain/time_slot.dart';
@@ -43,6 +47,7 @@ class _MedicationFormScreenState extends State<MedicationFormScreen> {
   final _memo = TextEditingController();
   final _dose = TextEditingController();
   int _mealTiming = 1; // 식후 30분
+  String? _photoPath;  // 실제 약 사진 (카메라/갤러리)
 
   // step 1
   late DateTime _startDate;
@@ -66,6 +71,25 @@ class _MedicationFormScreenState extends State<MedicationFormScreen> {
     _memo.dispose();
     _dose.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickPhoto(ImageSource source) async {
+    try {
+      final picked = await ImagePicker().pickImage(source: source, maxWidth: 1024);
+      if (picked == null) return;
+      final dir = await getApplicationDocumentsDirectory();
+      final photoDir = Directory(p.join(dir.path, 'photos'));
+      if (!photoDir.existsSync()) photoDir.createSync(recursive: true);
+      final dest = p.join(photoDir.path, 'med_${DateTime.now().millisecondsSinceEpoch}.jpg');
+      await File(picked.path).copy(dest);
+      if (mounted) setState(() => _photoPath = dest);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('사진을 불러오지 못했어요: $e')),
+        );
+      }
+    }
   }
 
   String _fmt(DateTime d) =>
@@ -110,6 +134,7 @@ class _MedicationFormScreenState extends State<MedicationFormScreen> {
       final med = Medication(
         id: 'med-${DateTime.now().millisecondsSinceEpoch}',
         name: _name.text.trim(),
+        photoPath: _photoPath,
         memo: _memo.text.trim().isEmpty ? null : _memo.text.trim(),
         colorHex: _pillColors[_colorIdx].hex,
         dose: _dose.text.trim().isEmpty ? null : _dose.text.trim(),
@@ -242,6 +267,8 @@ class _MedicationFormScreenState extends State<MedicationFormScreen> {
             );
           }),
         ),
+        const SizedBox(height: AppSpacing.xl),
+        _photoSection(),
         const SizedBox(height: AppSpacing.xxl),
         _field(_name, '약 이름', '예: 오메가3'),
         const SizedBox(height: AppSpacing.lg),
@@ -253,6 +280,75 @@ class _MedicationFormScreenState extends State<MedicationFormScreen> {
         const SizedBox(height: AppSpacing.sm),
         _segmented(),
       ],
+    );
+  }
+
+  Widget _photoSection() {
+    final hasPhoto = _photoPath != null && File(_photoPath!).existsSync();
+    return Row(
+      children: [
+        // 미리보기 (사진 or 카메라 아이콘)
+        GestureDetector(
+          onTap: () => _pickPhoto(ImageSource.camera),
+          child: Container(
+            width: 72, height: 72,
+            decoration: BoxDecoration(
+              color: AppColors.paper2,
+              borderRadius: AppRadius.lgAll,
+              border: Border.all(color: AppColors.line, width: 1),
+              image: hasPhoto
+                  ? DecorationImage(image: FileImage(File(_photoPath!)), fit: BoxFit.cover)
+                  : null,
+            ),
+            child: hasPhoto
+                ? null
+                : const Icon(Icons.photo_camera_rounded, color: AppColors.inkMute, size: 28),
+          ),
+        ),
+        const SizedBox(width: AppSpacing.md),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('약 사진 (선택)',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.ink2)),
+              const SizedBox(height: 6),
+              Row(
+                children: [
+                  _photoBtn(Icons.photo_camera_rounded, '카메라', () => _pickPhoto(ImageSource.camera)),
+                  const SizedBox(width: AppSpacing.sm),
+                  _photoBtn(Icons.photo_library_rounded, '갤러리', () => _pickPhoto(ImageSource.gallery)),
+                  if (hasPhoto) ...[
+                    const SizedBox(width: AppSpacing.sm),
+                    GestureDetector(
+                      onTap: () => setState(() => _photoPath = null),
+                      child: const Icon(Icons.close, size: 20, color: AppColors.inkMute),
+                    ),
+                  ],
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _photoBtn(IconData icon, String label, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: AppColors.pillDeep.withValues(alpha: 0.10),
+          borderRadius: AppRadius.pillAll,
+        ),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [
+          Icon(icon, size: 16, color: AppColors.pillDeep),
+          const SizedBox(width: 4),
+          Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.pillDeep)),
+        ]),
+      ),
     );
   }
 
@@ -475,11 +571,15 @@ class _MedicationFormScreenState extends State<MedicationFormScreen> {
       ),
       child: Row(
         children: [
-          Container(
-            width: 52, height: 52,
-            decoration: BoxDecoration(color: c.withValues(alpha: 0.16), shape: BoxShape.circle),
-            child: Icon(Icons.medication_rounded, color: c, size: 26),
-          ),
+          (_photoPath != null && File(_photoPath!).existsSync())
+              ? ClipRRect(
+                  borderRadius: AppRadius.pillAll,
+                  child: Image.file(File(_photoPath!), width: 52, height: 52, fit: BoxFit.cover))
+              : Container(
+                  width: 52, height: 52,
+                  decoration: BoxDecoration(color: c.withValues(alpha: 0.16), shape: BoxShape.circle),
+                  child: Icon(Icons.medication_rounded, color: c, size: 26),
+                ),
           const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
