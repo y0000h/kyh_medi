@@ -7,7 +7,7 @@ class CaregiverTheme {
   static ThemeData light() {
     final colorScheme = ColorScheme.fromSeed(
       seedColor: AppColors.caregiverPrimary,
-      brightness: Brightness.dark,
+      brightness: Brightness.light,
     ).copyWith(
       primary: AppColors.caregiverPrimary,
       onPrimary: AppColors.caregiverOnPrimary,
@@ -24,7 +24,7 @@ class CaregiverTheme {
 
     return ThemeData(
       useMaterial3: true,
-      brightness: Brightness.dark,
+      brightness: Brightness.light,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: AppColors.caregiverBg,
       canvasColor: AppColors.caregiverBg,
@@ -53,7 +53,7 @@ class CaregiverTheme {
         elevation: 0,
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(borderRadius: AppRadius.lgAll),
-        shadowColor: Color(0x33000000),
+        shadowColor: Color(0x14000000),
       ),
 
       elevatedButtonTheme: ElevatedButtonThemeData(

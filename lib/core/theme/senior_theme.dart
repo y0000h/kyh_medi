@@ -7,7 +7,7 @@ class SeniorTheme {
   static ThemeData light() {
     final colorScheme = ColorScheme.fromSeed(
       seedColor: AppColors.pillDeep,
-      brightness: Brightness.dark,
+      brightness: Brightness.light,
     ).copyWith(
       primary: AppColors.pillDeep,
       onPrimary: AppColors.onPrimary,
@@ -24,7 +24,7 @@ class SeniorTheme {
 
     return ThemeData(
       useMaterial3: true,
-      brightness: Brightness.dark,
+      brightness: Brightness.light,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: AppColors.bg,
       canvasColor: AppColors.bg,
@@ -52,7 +52,7 @@ class SeniorTheme {
         elevation: 0,
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(borderRadius: AppRadius.xlAll),
-        shadowColor: Color(0x33000000),
+        shadowColor: Color(0x14000000),
       ),
 
       elevatedButtonTheme: ElevatedButtonThemeData(

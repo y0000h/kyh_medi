@@ -259,7 +259,7 @@ class _ProgressCard extends StatelessWidget {
         borderRadius: AppRadius.xlAll,
         border: Border.all(color: AppColors.line, width: 1),
         boxShadow: const [
-          BoxShadow(offset: Offset(0, 4), blurRadius: 18, color: Color(0x26000000)),
+          BoxShadow(offset: Offset(0, 4), blurRadius: 18, color: Color(0x12000000)),
         ],
       ),
       child: Row(
@@ -334,7 +334,7 @@ class _DoseCard extends StatelessWidget {
               ),
               boxShadow: isTaken
                   ? null
-                  : const [BoxShadow(offset: Offset(0, 4), blurRadius: 14, color: Color(0x22000000))],
+                  : const [BoxShadow(offset: Offset(0, 4), blurRadius: 14, color: Color(0x10000000))],
             ),
             child: Material(
               color: Colors.transparent,

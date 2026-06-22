@@ -43,7 +43,7 @@ class StatusBadge extends StatelessWidget {
         label,
         style: const TextStyle(
           fontFamily: 'NanumSquare',
-          color: Color(0xFF231811), // 밝은 액센트 배경 위 가독성 (dark ink)
+          color: Colors.white,
           fontSize: 13,
           fontWeight: FontWeight.w800,
           letterSpacing: 0.4,

@@ -85,7 +85,7 @@ class _HeroGlyph extends StatelessWidget {
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
-                  colors: [Color(0x66F2C49C), Color(0x00F2C49C)],
+                  colors: [Color(0x553D7BF5), Color(0x003D7BF5)],
                 ),
               ),
             ),
