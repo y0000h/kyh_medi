@@ -92,18 +92,32 @@ class _ChatScreenState extends State<ChatScreen> {
       );
       final data = (res.data as Map?)?.cast<String, dynamic>();
       final reply = (data?['reply'] as String?)?.trim();
+      final serverError = data?['error'] as String?;
       if (!mounted) return;
       setState(() {
-        _messages.add(_Message(
-          (reply == null || reply.isEmpty) ? '(응답 없음)' : reply,
-          fromUser: false,
-        ));
+        if (reply != null && reply.isNotEmpty) {
+          _messages.add(_Message(reply, fromUser: false));
+        } else if (serverError != null) {
+          // 서버 측 설정 문제(예: API 키 미설정)도 사용자 친화적으로.
+          final msg = serverError.contains('not configured')
+              ? '⚠️ AI 도우미가 아직 설정되지 않았어요. 잠시 후 다시 시도해주세요.'
+              : '⚠️ 답변을 가져오지 못했어요. 잠시 후 다시 시도해주세요.';
+          _messages.add(_Message(msg, fromUser: false));
+        } else {
+          _messages.add(_Message('⚠️ 응답이 없어요. 다시 시도해주세요.', fromUser: false));
+        }
         _loading = false;
       });
     } catch (e) {
       if (!mounted) return;
+      final s = e.toString();
+      final friendly = (s.contains('Failed host lookup') ||
+              s.contains('SocketException') ||
+              s.contains('ClientException'))
+          ? '⚠️ 서버에 연결할 수 없어요. 인터넷 연결을 확인하고 다시 시도해주세요.'
+          : '⚠️ 오류가 발생했어요. 잠시 후 다시 시도해주세요.';
       setState(() {
-        _messages.add(_Message('⚠️ 오류: $e', fromUser: false));
+        _messages.add(_Message(friendly, fromUser: false));
         _loading = false;
       });
     }

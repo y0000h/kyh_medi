@@ -58,6 +58,16 @@ class AppColors {
   static const caregiverSuccess = Color(0xFF2FA76A);
   static const caregiverDanger = Color(0xFFE85461);
   static const caregiverWarning = Color(0xFFEFA13C);
+
+  /// "#RRGGBB" → Color. 비거나 형식이 틀리면 [fallback].
+  static Color fromHex(String? hex, {Color fallback = pillDeep}) {
+    if (hex == null) return fallback;
+    var h = hex.replaceAll('#', '').trim();
+    if (h.length == 6) h = 'FF$h';
+    if (h.length != 8) return fallback;
+    final v = int.tryParse(h, radix: 16);
+    return v == null ? fallback : Color(v);
+  }
 }
 
 /// 라이트 배경의 은은한 세로 그라데이션과 액센트 그라데이션.

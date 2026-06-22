@@ -88,6 +88,7 @@ class _MedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasPhoto = med.photoPath != null && File(med.photoPath!).existsSync();
+    final tint = AppColors.fromHex(med.colorHex);
     return Container(
       decoration: BoxDecoration(
         color: AppColors.paper,
@@ -110,10 +111,10 @@ class _MedCard extends StatelessWidget {
                 : Container(
                     width: 52, height: 52,
                     decoration: BoxDecoration(
-                      color: AppColors.pillDeep.withValues(alpha: 0.14),
+                      color: tint.withValues(alpha: 0.14),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.medication_rounded, color: AppColors.pillDeep, size: 26),
+                    child: Icon(Icons.medication_rounded, color: tint, size: 26),
                   ),
             const SizedBox(width: AppSpacing.md),
             Expanded(

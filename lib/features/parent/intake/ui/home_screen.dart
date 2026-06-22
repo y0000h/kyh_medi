@@ -319,6 +319,7 @@ class _DoseCard extends StatelessWidget {
         .map((m) => m.photoPath)
         .where((p) => p != null && File(p).existsSync())
         .firstOrNull;
+    final tint = AppColors.fromHex(view.medications.firstOrNull?.colorHex);
 
     return Opacity(
       opacity: isTaken ? 0.6 : 1,
@@ -348,7 +349,7 @@ class _DoseCard extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          _PillAvatar(photoPath: photo),
+                          _PillAvatar(photoPath: photo, tint: tint),
                           const SizedBox(width: AppSpacing.md),
                           Expanded(
                             child: Column(
@@ -431,7 +432,8 @@ class _DoseCard extends StatelessWidget {
 
 class _PillAvatar extends StatelessWidget {
   final String? photoPath;
-  const _PillAvatar({this.photoPath});
+  final Color tint;
+  const _PillAvatar({this.photoPath, this.tint = AppColors.pillDeep});
   @override
   Widget build(BuildContext context) {
     if (photoPath != null) {
@@ -443,10 +445,10 @@ class _PillAvatar extends StatelessWidget {
     return Container(
       width: 56, height: 56,
       decoration: BoxDecoration(
-        color: AppColors.pillDeep.withValues(alpha: 0.16),
+        color: tint.withValues(alpha: 0.16),
         shape: BoxShape.circle,
       ),
-      child: const Icon(Icons.medication_rounded, color: AppColors.pillDeep, size: 28),
+      child: Icon(Icons.medication_rounded, color: tint, size: 28),
     );
   }
 }
