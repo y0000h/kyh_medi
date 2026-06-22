@@ -76,7 +76,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
   Widget build(BuildContext context) {
     final p = context.watch<ChildHomeProvider>();
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.caregiverBg,
       appBar: AppBar(
         leading: widget.onModeChange == null
             ? null

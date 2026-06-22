@@ -118,13 +118,13 @@ class _ChildLoginScreenState extends State<ChildLoginScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.caregiverBg,
       appBar: AppBar(
         leading: widget.onModeChange == null
             ? null
             : IconButton(
                 icon: const Icon(Icons.arrow_back),
-                tooltip: '모드 변경',
+                tooltip: '처음 화면',
                 onPressed: _loading ? null : widget.onModeChange,
               ),
         title: const Text('자녀 로그인'),
