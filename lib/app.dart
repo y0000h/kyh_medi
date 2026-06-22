@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'core/hive/hive_init.dart';
@@ -48,6 +49,15 @@ class _AppState extends State<App> {
     _onboardingDone = s.onboardingDone;
   }
 
+  // 한국어 우선 로컬라이즈 (날짜/시간 피커 등이 한국어로 표시되도록).
+  static const _locale = Locale('ko');
+  static const _localizationsDelegates = [
+    GlobalMaterialLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+  ];
+  static const _supportedLocales = [Locale('ko'), Locale('en')];
+
   void _selectMode(String m) {
     setState(() => _mode = m);
   }
@@ -68,6 +78,9 @@ class _AppState extends State<App> {
     if (_mode == null) {
       return MaterialApp(
         theme: SeniorTheme.light(),
+        locale: _locale,
+        localizationsDelegates: _localizationsDelegates,
+        supportedLocales: _supportedLocales,
         home: ModeSelectScreen(onSelected: _selectMode),
       );
     }
@@ -112,6 +125,9 @@ class _AppState extends State<App> {
       child: MaterialApp(
         title: 'KYH 약 알림',
         theme: SeniorTheme.light(),
+        locale: _locale,
+        localizationsDelegates: _localizationsDelegates,
+        supportedLocales: _supportedLocales,
         home: _onboardingDone
             ? ParentShell(onModeChange: _resetMode)
             : OnboardingScreen(onDone: _completeOnboarding),
@@ -124,6 +140,9 @@ class _AppState extends State<App> {
     return MaterialApp(
       title: 'KYH 약 알림 (자녀)',
       theme: CaregiverTheme.light(),
+      locale: _locale,
+      localizationsDelegates: _localizationsDelegates,
+      supportedLocales: _supportedLocales,
       home: ChildShell(onModeChange: _resetMode),
     );
   }

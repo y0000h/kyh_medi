@@ -24,13 +24,17 @@ class MedicationAdapter extends TypeAdapter<Medication> {
       colorHex: fields[4] as String?,
       createdAt: fields[5] as DateTime,
       deletedAt: fields[6] as DateTime?,
+      mealTiming: fields[7] as int?,
+      dose: fields[8] as String?,
+      startDate: fields[9] as DateTime?,
+      endDate: fields[10] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Medication obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -44,7 +48,15 @@ class MedicationAdapter extends TypeAdapter<Medication> {
       ..writeByte(5)
       ..write(obj.createdAt)
       ..writeByte(6)
-      ..write(obj.deletedAt);
+      ..write(obj.deletedAt)
+      ..writeByte(7)
+      ..write(obj.mealTiming)
+      ..writeByte(8)
+      ..write(obj.dose)
+      ..writeByte(9)
+      ..write(obj.startDate)
+      ..writeByte(10)
+      ..write(obj.endDate);
   }
 
   @override

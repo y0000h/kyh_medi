@@ -22,6 +22,7 @@ class SlotsProvider extends ChangeNotifier {
     required int minute,
     required int daysOfWeek,
     required List<String> medicationIds,
+    bool scheduleAlarm = true,
   }) async {
     final s = TimeSlot(
       id: _newId(), label: label, hour: hour, minute: minute, daysOfWeek: daysOfWeek,
@@ -30,7 +31,7 @@ class SlotsProvider extends ChangeNotifier {
     for (final mid in medicationIds) {
       await _repo.attachMedication(SlotMedication(slotId: s.id, medicationId: mid));
     }
-    await _scheduleNotifications(s);
+    if (scheduleAlarm) await _scheduleNotifications(s);
     _items = _repo.findActiveSlots();
     notifyListeners();
     // 주: medications 미러는 MedicationsProvider.add 시점에 이미 push됨.
