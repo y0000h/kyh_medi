@@ -124,6 +124,45 @@ class _ChatScreenState extends State<ChatScreen> {
     _scrollToBottom();
   }
 
+  static const _suggestionTexts = [
+    '약을 깜빡하고 안 먹었어요',
+    '약을 두 번 먹어도 되나요?',
+    '식전·식후가 헷갈려요',
+    '앱 사용법 알려주세요',
+  ];
+
+  void _sendSuggestion(String text) {
+    if (_loading) return;
+    _ctrl.text = text;
+    _send();
+  }
+
+  Widget _suggestions() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: [
+          for (final s in _suggestionTexts)
+            ActionChip(
+              label: Text(s),
+              onPressed: () => _sendSuggestion(s),
+              backgroundColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.10),
+              side: BorderSide(color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.35)),
+              labelStyle: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              shape: const StadiumBorder(),
+            ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,6 +191,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       },
                     ),
                   ),
+                  // 추천 질문 칩 (대화 시작 전에만 노출)
+                  if (_messages.length <= 1 && !_loading) _suggestions(),
                   const Divider(height: 1),
                   _InputBar(
                     controller: _ctrl,

@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/theme/tokens.dart';
-import '../../../../shared/widgets/senior_button.dart';
 import '../../monetization/ad_banner.dart';
 import '../../monetization/ads_provider.dart';
 import '../../pairing/ui/connect_child_screen.dart';
@@ -40,61 +39,185 @@ class SettingsScreen extends StatelessWidget {
     final ads = context.watch<AdsProvider>();
     return Scaffold(
       backgroundColor: Colors.transparent,
-      appBar: AppBar(title: const Text('설정')),
+      appBar: AppBar(
+        title: const Text('설정', style: TextStyle(fontWeight: FontWeight.w800)),
+        toolbarHeight: 72,
+      ),
       body: ListView(
-        padding: const EdgeInsets.all(AppSizes.padding),
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.xl, AppSpacing.sm, AppSpacing.xl, AppSpacing.x4l,
+        ),
         children: [
-          // ── 자녀와 연결 ──
-          Card(child: ListTile(
-            leading: const Icon(Icons.family_restroom, color: AppColors.pillDeep, size: 32),
-            title: const Text('자녀와 연결',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
-            subtitle: const Text('자녀가 부모님 복약을 원격으로 확인할 수 있어요'),
-            trailing: const Icon(Icons.chevron_right),
+          _SettingTile(
+            icon: Icons.family_restroom_rounded,
+            title: '자녀와 연결',
+            subtitle: '자녀가 부모님 복약을 원격으로 확인해요',
             onTap: () => Navigator.push(context,
                 MaterialPageRoute(builder: (_) => const ConnectChildScreen())),
-          )),
+          ),
           if (onModeChange != null) ...[
-            const SizedBox(height: 8),
-            Card(child: ListTile(
-              leading: const Icon(Icons.swap_horiz, color: AppColors.pillDeep, size: 32),
-              title: const Text('모드 변경',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
-              subtitle: const Text('자녀 모드로 전환하거나 모드 선택 화면으로 돌아갈 수 있어요'),
-              trailing: const Icon(Icons.chevron_right),
+            const SizedBox(height: AppSpacing.md),
+            _SettingTile(
+              icon: Icons.swap_horiz_rounded,
+              title: '모드 변경',
+              subtitle: '모드 선택 화면으로 돌아가요',
               onTap: () => _confirmModeChange(context),
-            )),
+            ),
           ],
-          const Divider(height: 32),
+          const SizedBox(height: AppSpacing.xxl),
           // ── 광고 제거 ──
-          if (!ads.removed) ...[
-            const Card(child: Padding(padding: EdgeInsets.all(16),
-              child: Text('광고 제거 — ₩2,900',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700)),
-            )),
-            const SizedBox(height: 8),
-            const Text('한 번 결제하시면 영구 제거됩니다.', style: TextStyle(fontSize: 16)),
-            const SizedBox(height: 16),
-            SeniorButton(label: '광고 제거 결제',
-                onPressed: () => ads.purchaseRemoveAds(context)),
-            const SizedBox(height: 12),
-            SeniorButton(label: '구매 복원',
-                variant: SeniorButtonVariant.secondary,
-                onPressed: () => ads.restorePurchases()),
-          ] else ...[
-            const Card(child: Padding(padding: EdgeInsets.all(16),
-              child: Text('광고 제거됨 ✓',
-                  style: TextStyle(fontSize: 22, color: AppColors.jade)),
-            )),
-          ],
-          const Divider(height: 40),
-          const Text('앱 정보', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
-          const SizedBox(height: 8),
-          const Text('KYH 약 알림 v1.0.0', style: TextStyle(fontSize: 16)),
-          const Text('Korean Young Health · 한 알도, 잊지 않게.',
-              style: TextStyle(fontSize: 14, color: AppColors.ink2)),
-          const SizedBox(height: 24),
+          if (!ads.removed)
+            _Card(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 44, height: 44,
+                        decoration: BoxDecoration(
+                          color: AppColors.capsule.withValues(alpha: 0.16),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.block_rounded, color: AppColors.capsule),
+                      ),
+                      const SizedBox(width: AppSpacing.md),
+                      const Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('광고 제거 — ₩2,900',
+                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AppColors.ink)),
+                            SizedBox(height: 2),
+                            Text('한 번 결제하면 영구 제거돼요',
+                                style: TextStyle(fontSize: 13, color: AppColors.inkMute)),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+                  FilledButton(
+                    onPressed: () => ads.purchaseRemoveAds(context),
+                    child: const Text('광고 제거 결제', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  OutlinedButton(
+                    onPressed: () => ads.restorePurchases(),
+                    child: const Text('구매 복원', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+                  ),
+                ],
+              ),
+            )
+          else
+            _Card(
+              child: Row(
+                children: [
+                  Container(
+                    width: 44, height: 44,
+                    decoration: BoxDecoration(
+                      color: AppColors.jade.withValues(alpha: 0.16),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.check_rounded, color: AppColors.jade),
+                  ),
+                  const SizedBox(width: AppSpacing.md),
+                  const Text('광고가 제거됐어요',
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800, color: AppColors.ink)),
+                ],
+              ),
+            ),
+          const SizedBox(height: AppSpacing.xxl),
+          // ── 앱 정보 ──
+          const Padding(
+            padding: EdgeInsets.only(left: AppSpacing.xs, bottom: AppSpacing.sm),
+            child: Text('앱 정보',
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, letterSpacing: 0.5, color: AppColors.inkMute)),
+          ),
+          _Card(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text('KYH 약 알림 v1.0.0',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.ink)),
+                SizedBox(height: 2),
+                Text('Korean Young Health · 한 알도, 잊지 않게.',
+                    style: TextStyle(fontSize: 13, color: AppColors.ink2)),
+              ],
+            ),
+          ),
+          const SizedBox(height: AppSpacing.xl),
           const Center(child: AdBanner()),
+        ],
+      ),
+    );
+  }
+}
+
+class _Card extends StatelessWidget {
+  final Widget child;
+  final VoidCallback? onTap;
+  const _Card({required this.child, this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    final box = DecoratedBox(
+      decoration: BoxDecoration(
+        color: AppColors.paper,
+        borderRadius: AppRadius.xlAll,
+        border: Border.all(color: AppColors.line, width: 1),
+        boxShadow: const [
+          BoxShadow(offset: Offset(0, 4), blurRadius: 14, color: Color(0x10000000)),
+        ],
+      ),
+      child: Padding(padding: const EdgeInsets.all(AppSpacing.lg), child: child),
+    );
+    if (onTap == null) return box;
+    return Material(
+      color: Colors.transparent,
+      borderRadius: AppRadius.xlAll,
+      child: InkWell(borderRadius: AppRadius.xlAll, onTap: onTap, child: box),
+    );
+  }
+}
+
+class _SettingTile extends StatelessWidget {
+  final IconData icon;
+  final String title, subtitle;
+  final VoidCallback onTap;
+  const _SettingTile({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  });
+  @override
+  Widget build(BuildContext context) {
+    return _Card(
+      onTap: onTap,
+      child: Row(
+        children: [
+          Container(
+            width: 44, height: 44,
+            decoration: BoxDecoration(
+              color: AppColors.pillDeep.withValues(alpha: 0.14),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: AppColors.pillDeep),
+          ),
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AppColors.ink)),
+                const SizedBox(height: 2),
+                Text(subtitle,
+                    style: const TextStyle(fontSize: 13, color: AppColors.inkMute)),
+              ],
+            ),
+          ),
+          const Icon(Icons.chevron_right_rounded, color: AppColors.inkMute),
         ],
       ),
     );
