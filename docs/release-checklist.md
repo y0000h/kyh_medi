@@ -25,8 +25,11 @@
 
 ## 4. 푸시 알림 (iOS)
 
-- 🔶 로컬 알림(flutter_local_notifications)은 정상. **FCM 원격 푸시**를 실제 쓸 거라면 iOS는 APNS 키 등록 + `UIBackgroundModes: remote-notification` 필요(현재 plist에 없음). 시뮬레이터 APNS 미지원 경고는 정상.
-  - 자녀 모니터링 알림을 푸시로 보낼 계획이면 설정 필요. 인앱 폴링/로컬만 쓸 거면 불필요.
+- 발송 파이프라인(Edge Function `on_dose_event_insert`, FCM v1)·토큰 등록·핸들러 **구현 완료**. Android 동작.
+- ✅ `Info.plist`에 `UIBackgroundModes: remote-notification` 추가(코드).
+- ⬜ **iOS 푸시 활성화** — 코드로 안 되는 계정/Xcode 작업 남음: Apple App ID Push 권한, APNs .p8 키 → Firebase 업로드, Xcode Push Notifications + Background Modes capability. 실기기 검증. → 상세 [docs/setup/ios-push-setup.md](setup/ios-push-setup.md).
+  - 인앱 폴링/로컬 알림만 쓸 거면 iOS 푸시 셋업은 생략 가능.
+- 🔶 (백엔드) `FCM_SERVICE_ACCOUNT_JSON` 시크릿 + 함수 배포 + `dose_events` Insert Webhook 등록 상태 재확인.
 
 ## 5. 백엔드 / 개인정보
 
