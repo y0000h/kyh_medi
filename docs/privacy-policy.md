@@ -1,8 +1,12 @@
 # 개인정보처리방침 (KYH 약 알림)
 
 > ⚠️ 초안입니다. 굵게 표시된 `〔 〕` 부분(사업자/연락처/시행일)을 실제 정보로 채운 뒤,
-> 웹에 공개(예: GitHub Pages·Notion 공개페이지)하고 그 URL을 Play Console
-> "앱 콘텐츠 → 개인정보처리방침"에 등록하세요.
+> 웹에 공개하고 그 URL을 Play Console / App Store Connect "개인정보처리방침"에 등록하세요.
+>
+> **이 문서가 정본**입니다. 공개 페이지는 [site/index.html](../site/index.html)이며
+> GitHub Actions(`.github/workflows/pages.yml`)로 자동 배포됩니다(URL 예:
+> `https://y0000h.github.io/kyh_medi/`). 문구를 고치면 **이 파일과 site/index.html을 함께** 갱신하세요.
+> 최초 1회 Settings → Pages → Source를 "GitHub Actions"로 설정해야 배포됩니다.
 
 **서비스명**: KYH 약 알림 (이하 "본 앱")
 **운영자**: 〔운영자/사업자명〕

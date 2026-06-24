@@ -1,0 +1,41 @@
+name: Deploy Privacy Page
+
+# site/ 폴더(개인정보처리방침 등 공개 정적 페이지)만 GitHub Pages로 배포한다.
+# docs/ 의 내부 문서(진행 노트·릴리스 체크리스트 등)는 공개되지 않는다.
+#
+# 최초 1회: GitHub 저장소 → Settings → Pages → "Build and deployment" →
+#   Source 를 "GitHub Actions" 로 설정해야 한다.
+# 배포 URL: https://<user>.github.io/<repo>/  (예: https://y0000h.github.io/kyh_medi/)
+
+on:
+  push:
+    branches: [main]
+    paths: ['site/**', '.github/workflows/pages.yml']
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 동시 배포 1건만 — 진행 중이면 최신으로 대체
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - name: Upload site/ artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
