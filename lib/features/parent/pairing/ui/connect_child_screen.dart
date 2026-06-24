@@ -52,7 +52,7 @@ class _ConnectChildScreenState extends State<ConnectChildScreen> {
   Widget build(BuildContext context) {
     final pp = context.watch<PairingProvider>();
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.bg,
       appBar: AppBar(
         title: const Text('자녀와 연결', style: TextStyle(fontWeight: FontWeight.w800)),
         toolbarHeight: 64,
