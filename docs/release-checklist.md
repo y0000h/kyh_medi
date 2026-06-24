@@ -40,7 +40,9 @@
 ## 6. 스토어 자산
 
 - ✅ 앱 아이콘 모던화(`64dbd87`).
-- ⬜ 스크린샷(기기별), 앱 설명, 키워드, 카테고리, 연령등급 설문.
+- 🔶 **스크린샷** — 라이트 UI 4종 촬영 완료([docs/screenshots/store-1.0.0+4/](screenshots/store-1.0.0+4/): 홈·일정·마법사·자녀로그인). 남은 작업: App Store 사이즈별(6.7"/6.5") 변환, 광고 끈 릴리스 빌드로 이력 등 추가 촬영(선택), 마케팅 텍스트/프레임(선택). 기존 `screenshots/01~05`는 옛 UI라 사용 금지.
+- 🔶 앱 설명·짧은 설명·키워드 — 초안 [docs/setup/play-console-upload.md](setup/play-console-upload.md)에 있음(검토·갱신).
+- ⬜ 카테고리, 연령등급 설문(콘솔에서 직접).
 - ⬜ iOS: App Store Connect 앱 생성 + 서명(배포 인증서/프로비저닝). Android: 키스토어 서명 + Play Console 등록.
 
 ### ✅ Android 업로드 키스토어 (해결 2026-06-25)
