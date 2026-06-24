@@ -32,7 +32,7 @@
 
 - ✅ Supabase keep-alive cron 적용(무료 플랜 일시정지 예방, `4714cf9`).
 - 🔶 Supabase **프로덕션 점검**: RLS 정책, 페어링/redeem RPC 권한, 이메일 OTP 발신자(Brevo SMTP) 도메인.
-- ⬜ **개인정보처리방침 호스팅 URL** — 초안은 레포에 있음(`1d5f53a`). 스토어 제출엔 공개 URL 필요(예: GitHub Pages/노션 공개).
+- 🔶 **개인정보처리방침 호스팅 URL** — 공개 페이지화 완료([site/index.html](../site/index.html) + Pages 워크플로). 남은 사용자 작업: ① Settings → Pages → Source "GitHub Actions" 활성화 ② `〔운영자/사업자명〕`·`〔성명/직책〕` placeholder 채우기 ③ 배포 URL(`https://y0000h.github.io/kyh_medi/`)을 스토어에 등록.
 
 ## 6. 스토어 자산
 
