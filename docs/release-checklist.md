@@ -43,16 +43,18 @@
 - ⬜ 스크린샷(기기별), 앱 설명, 키워드, 카테고리, 연령등급 설문.
 - ⬜ iOS: App Store Connect 앱 생성 + 서명(배포 인증서/프로비저닝). Android: 키스토어 서명 + Play Console 등록.
 
-### ⚠️ Android 업로드 키스토어 경로 깨짐 (**출시 차단**)
+### ✅ Android 업로드 키스토어 (해결 2026-06-25)
 
-- `android/key.properties`(gitignore됨, 정상)의 `storeFile`이 **윈도우 경로**
-  `C:\Users\y00h\upload-keystore.jks`를 가리켜 이 맥에선 릴리스 서명 실패.
-  (다른 PC에서 설정한 값이 남은 것.)
-- 해야 할 일:
-  1. **기존 `upload-keystore.jks`를 찾아** 이 맥으로 가져오거나(이미 Play에 올린 앱이면 **이 키를 반드시 보존** — 분실 시 업데이트 불가),
-  2. 아직 미출시면 새 키 생성 가능: `keytool -genkey -v -keystore ~/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload`
-  3. `key.properties`의 `storeFile`을 맥 경로(예: `/Users/y00h/upload-keystore.jks`)로 수정.
-- ⚠️ 키스토어 파일과 비밀번호는 **백업 필수**(Play Console 업로드 키, 분실 시 복구 절차 복잡).
+- (이전) `key.properties`의 `storeFile`이 윈도우 경로 `C:\Users\y00h\upload-keystore.jks`를
+  가리켜 릴리스 서명 실패. 미출시 확인 후 **새 업로드 키 생성**으로 해결.
+- 조치: `/Users/y00h/upload-keystore.jks` 생성(별칭 `upload`, RSA 2048, 유효 10000일,
+  CN=KYH Medi). `key.properties`의 `storeFile`을 맥 절대경로로 수정(둘 다 gitignore, 레포 밖).
+- 검증: `flutter build appbundle --release` → 서명된 `app-release.aab` 64.5MB,
+  업로드 키(CN=KYH Medi)로 서명 확인.
+- ⚠️ **백업 필수**: `/Users/y00h/upload-keystore.jks` 파일 + `key.properties`의 비밀번호를
+  안전한 곳(비밀번호 관리자/암호화 백업)에 보관. **Play에 첫 업로드 후엔 이 키가 영구 업로드 키**가
+  되어 분실 시 재설정 절차가 번거롭다. (Play App Signing 사용 시 앱 서명 키는 구글이 보관하지만,
+  업로드 키는 본인이 보관.)
 
 ## 7. 빌드 검증
 
