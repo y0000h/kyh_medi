@@ -82,7 +82,9 @@ class SlotListScreen extends StatelessWidget {
                   slot: s,
                   meds: slotMeds,
                   daysLabel: _daysLabel(s.daysOfWeek),
-                  accent: _dotColor(i),
+                  accent: AppColors.fromHex(
+                      slotMeds.isEmpty ? null : slotMeds.first.colorHex,
+                      fallback: _dotColor(i)),
                   onDelete: () => _confirmDelete(context, s),
                   onEdit: () async {
                     final updated = await Navigator.push<bool>(
