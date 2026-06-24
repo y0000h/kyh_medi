@@ -151,15 +151,26 @@ class _ChildLoginScreenState extends State<ChildLoginScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.family_restroom, size: 80, color: AppColors.caregiverPrimary),
+            Container(
+              width: 96, height: 96,
+              decoration: BoxDecoration(
+                color: AppColors.caregiverPrimary.withValues(alpha: 0.14),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.family_restroom, size: 52, color: AppColors.caregiverPrimary),
+            ),
             const SizedBox(height: 24),
             const Text('Google 계정으로 빠르게 시작',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AppColors.caregiverInk)),
             const SizedBox(height: 32),
-            ElevatedButton.icon(
-              icon: const Icon(Icons.login),
-              label: const Text('Google로 로그인'),
-              onPressed: _loading ? null : _googleSignIn,
+            SizedBox(
+              width: double.infinity, height: 56,
+              child: FilledButton.icon(
+                icon: const Icon(Icons.login),
+                label: const Text('Google로 로그인',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+                onPressed: _loading ? null : _googleSignIn,
+              ),
             ),
             if (_error != null && _tab.index == 0)
               Padding(
@@ -211,9 +222,13 @@ class _ChildLoginScreenState extends State<ChildLoginScreen>
           keyboardType: TextInputType.emailAddress,
         ),
         const SizedBox(height: 24),
-        ElevatedButton(
-          onPressed: _loading ? null : _sendOtp,
-          child: Text(_loading ? '발송 중…' : '인증번호 받기'),
+        SizedBox(
+          height: 56,
+          child: FilledButton(
+            onPressed: _loading ? null : _sendOtp,
+            child: Text(_loading ? '발송 중…' : '인증번호 받기',
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+          ),
         ),
       ];
 
@@ -236,9 +251,13 @@ class _ChildLoginScreenState extends State<ChildLoginScreen>
           style: const TextStyle(fontSize: 24, letterSpacing: 6, fontWeight: FontWeight.w700),
         ),
         const SizedBox(height: 24),
-        ElevatedButton(
-          onPressed: _loading ? null : _verifyOtp,
-          child: Text(_loading ? '확인 중…' : '확인'),
+        SizedBox(
+          height: 56,
+          child: FilledButton(
+            onPressed: _loading ? null : _verifyOtp,
+            child: Text(_loading ? '확인 중…' : '확인',
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+          ),
         ),
         const SizedBox(height: 12),
         TextButton(

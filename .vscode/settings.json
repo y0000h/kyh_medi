@@ -1,0 +1,17 @@
+{
+  "explorer.compactFolders": false,
+  "dart.previewFlutterUiGuides": true,
+  "files.exclude": {
+    "**/.dart_tool": true,
+    "**/.idea": true,
+    "**/build": true
+  },
+  "files.watcherExclude": {
+    "**/.dart_tool/**": true,
+    "**/build/**": true
+  },
+  "search.exclude": {
+    "**/.dart_tool": true,
+    "**/build": true
+  }
+}
