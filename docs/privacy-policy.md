@@ -1,15 +1,12 @@
 # 개인정보처리방침 (KYH 약 알림)
 
-> ⚠️ 초안입니다. 굵게 표시된 `〔 〕` 부분(사업자/연락처/시행일)을 실제 정보로 채운 뒤,
-> 웹에 공개하고 그 URL을 Play Console / App Store Connect "개인정보처리방침"에 등록하세요.
->
 > **이 문서가 정본**입니다. 공개 페이지는 [site/index.html](../site/index.html)이며
 > GitHub Actions(`.github/workflows/pages.yml`)로 자동 배포됩니다(URL 예:
 > `https://y0000h.github.io/kyh_medi/`). 문구를 고치면 **이 파일과 site/index.html을 함께** 갱신하세요.
 > 최초 1회 Settings → Pages → Source를 "GitHub Actions"로 설정해야 배포됩니다.
 
 **서비스명**: KYH 약 알림 (이하 "본 앱")
-**운영자**: 〔운영자/사업자명〕
+**운영자**: Korean Young Health
 **문의 이메일**: y0000h2@gmail.com
 **시행일**: 2026-06-23
 
@@ -85,7 +82,7 @@
 광고를 비활성화할 수 있습니다.
 
 ## 9. 개인정보 보호책임자 및 문의
-- 책임자: 〔성명/직책〕
+- 책임자: Korean Young Health
 - 이메일: y0000h2@gmail.com
 
 ## 10. 고지의 의무
