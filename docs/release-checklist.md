@@ -40,7 +40,20 @@
 - ⬜ 스크린샷(기기별), 앱 설명, 키워드, 카테고리, 연령등급 설문.
 - ⬜ iOS: App Store Connect 앱 생성 + 서명(배포 인증서/프로비저닝). Android: 키스토어 서명 + Play Console 등록.
 
+### ⚠️ Android 업로드 키스토어 경로 깨짐 (**출시 차단**)
+
+- `android/key.properties`(gitignore됨, 정상)의 `storeFile`이 **윈도우 경로**
+  `C:\Users\y00h\upload-keystore.jks`를 가리켜 이 맥에선 릴리스 서명 실패.
+  (다른 PC에서 설정한 값이 남은 것.)
+- 해야 할 일:
+  1. **기존 `upload-keystore.jks`를 찾아** 이 맥으로 가져오거나(이미 Play에 올린 앱이면 **이 키를 반드시 보존** — 분실 시 업데이트 불가),
+  2. 아직 미출시면 새 키 생성 가능: `keytool -genkey -v -keystore ~/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload`
+  3. `key.properties`의 `storeFile`을 맥 경로(예: `/Users/y00h/upload-keystore.jks`)로 수정.
+- ⚠️ 키스토어 파일과 비밀번호는 **백업 필수**(Play Console 업로드 키, 분실 시 복구 절차 복잡).
+
 ## 7. 빌드 검증
 
 - ✅ `flutter analyze` 에러 0, 테스트 16개 통과(2026-06-25 기준).
-- ⬜ 릴리스 빌드 실기기 스모크(`flutter build ios --release` / `flutter build appbundle`) — 광고 실 ID 넣은 뒤.
+- ✅ **릴리스 컴파일 스모크 통과(2026-06-25)**: `flutter build appbundle --release`(R8/proguard, debug 서명 폴백으로) → `app-release.aab` 64.5MB, `flutter build ios --release --no-codesign` → `Runner.app` 38.6MB. 둘 다 성공.
+- 🔶 Gradle 경고: Kotlin Gradle Plugin → Built-in Kotlin 마이그레이션 권고(현재 빌드엔 무해, 향후 Flutter 대비). [가이드](https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-app-developers).
+- ⬜ 서명된 실기기 릴리스 스모크 — 위 키스토어 경로 수정 + 광고 실 ID 넣은 뒤.
