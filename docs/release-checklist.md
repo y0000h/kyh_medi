@@ -35,7 +35,7 @@
 
 - ✅ Supabase keep-alive cron 적용(무료 플랜 일시정지 예방, `4714cf9`).
 - 🔶 Supabase **프로덕션 점검**: RLS 정책, 페어링/redeem RPC 권한, 이메일 OTP 발신자(Brevo SMTP) 도메인.
-- 🔶 **개인정보처리방침 호스팅 URL** — 공개 페이지화 완료([site/index.html](../site/index.html) + Pages 워크플로), placeholder(운영자·보호책임자: Korean Young Health) 채움. 남은 사용자 작업: ① Settings → Pages → Source "GitHub Actions" 활성화 ② 배포 URL(`https://y0000h.github.io/kyh_medi/`)을 스토어에 등록.
+- ✅ **개인정보처리방침 URL 라이브** — https://y0000h.github.io/kyh_medi/ (HTTP 200 확인). Pages를 GitHub Actions 소스로 활성화 + 배포 완료. 남은 건 이 URL을 Play Console / App Store Connect "개인정보처리방침" 칸에 **붙여넣기**만.
 
 ## 6. 스토어 자산
 
