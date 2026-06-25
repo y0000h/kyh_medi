@@ -40,7 +40,7 @@
 ## 6. 스토어 자산
 
 - ✅ 앱 아이콘 모던화(`64dbd87`) + **스토어 그래픽 라이트+블루 교체**(`de794ff`): `icon_512.png`, `feature_graphic_1024x500.jpg`(옛 갈색 버전 대체). [docs/store-assets/](store-assets/).
-- 🔶 **스크린샷** — 라이트 UI 4종 촬영 완료([docs/screenshots/store-1.0.0+4/](screenshots/store-1.0.0+4/): 홈·일정·마법사·자녀로그인). 남은 작업: App Store 사이즈별(6.7"/6.5") 변환, 광고 끈 릴리스 빌드로 이력 등 추가 촬영(선택), 마케팅 텍스트/프레임(선택). 기존 `screenshots/01~05`는 옛 UI라 사용 금지.
+- ✅ **스크린샷** — 라이트 UI 4종(홈·일정·마법사·자녀로그인). Play용 1206×2622 + **App Store 6.9" 1290×2796**(`appstore-6.9/`) 둘 다 준비([docs/screenshots/store-1.0.0+4/](screenshots/store-1.0.0+4/)). (선택) 광고 끈 릴리스 빌드로 이력 추가, 마케팅 프레임. 기존 `screenshots/01~05`는 옛 UI라 사용 금지.
 - 🔶 앱 설명·짧은 설명·키워드 — 초안 [docs/setup/play-console-upload.md](setup/play-console-upload.md)에 있음(검토·갱신).
 - ⬜ 카테고리, 연령등급 설문(콘솔에서 직접).
 - ⬜ iOS: App Store Connect 앱 생성 + 서명(배포 인증서/프로비저닝). Android: 키스토어 서명 + Play Console 등록.
@@ -62,5 +62,5 @@
 
 - ✅ `flutter analyze` 에러 0, 테스트 16개 통과(2026-06-25 기준).
 - ✅ **릴리스 컴파일 스모크 통과(2026-06-25)**: `flutter build appbundle --release`(R8/proguard, debug 서명 폴백으로) → `app-release.aab` 64.5MB, `flutter build ios --release --no-codesign` → `Runner.app` 38.6MB. 둘 다 성공.
-- 🔶 Gradle 경고: Kotlin Gradle Plugin → Built-in Kotlin 마이그레이션 권고(현재 빌드엔 무해, 향후 Flutter 대비). [가이드](https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-app-developers).
+- 🔶 Gradle 경고: Kotlin Gradle Plugin → Built-in Kotlin 마이그레이션 권고. **현재는 보류 권장** — 경고는 향후 Flutter 버전 한정이고 지금 빌드는 정상(서명 AAB 검증됨). 빌드 설정 변경은 작동 중인 파이프라인을 깰 위험이 있으니, **Flutter 업그레이드 시점에** [공식 가이드](https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-app-developers) 보며 진행. `settings.gradle.kts`의 `id("org.jetbrains.kotlin.android") version "2.2.20"` 명시 선언이 원인.
 - ⬜ 서명된 실기기 릴리스 스모크 — 위 키스토어 경로 수정 + 광고 실 ID 넣은 뒤.
