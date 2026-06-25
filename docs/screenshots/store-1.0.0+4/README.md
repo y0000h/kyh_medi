@@ -10,6 +10,11 @@
 | 03_med_wizard.png | 약 등록 마법사 | 색상 선택 / 사진 / 식사시점 세그먼트 |
 | 04_child_login.png | 자녀 로그인 | 연두 테마(자녀 모드) |
 
+## 사이즈별
+- **이 폴더(1206×2622)**: Play Store용(320~3840px 허용 — 그대로 업로드 가능).
+- **`appstore-6.9/`(1290×2796)**: App Store Connect 6.9"(iPhone 16/17 Pro Max) 필수 사이즈. 비율 차이 0.3%라 무왜곡 리사이즈.
+  - App Store는 6.9" 1세트만 올려도 다른 크기에 자동 적용됨. 6.5"(1242×2688)도 필요하면 동일 방식으로 추가.
+
 ## 촬영 조건
 - 기기: iPhone 17 시뮬레이터(iOS 26.5), 1206×2622 px(9.5:20.7).
 - DEBUG 배너 off(임시 `debugShowCheckedModeBanner:false`, 촬영 후 원복).
