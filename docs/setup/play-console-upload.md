@@ -1,11 +1,12 @@
 # Play Console 등록 + 내부 테스트 업로드 가이드 (Phase 13.6 + 13.7)
 
-> 사전 조건:
-> - Google Play Console **개발자 계정 신원확인 완료** (4/30 신청 → 1~2일 대기)
-> - `app-release.aab` 빌드 완료 (`docs/setup/aab-build-and-release.md`)
-> - 개인정보처리방침 URL 발급 완료 (`docs/legal/privacy.md` → GitHub Pages 또는 Gist)
+> 사전 조건(2026-06-25 기준 — 대부분 준비 완료):
+> - ✅ 개인정보처리방침 URL **라이브**: https://y0000h.github.io/kyh_medi/
+> - ✅ 서명 AAB 빌드 가능(키스토어 해결됨): `flutter build appbundle --release` → `build/app/outputs/bundle/release/app-release.aab`
+> - ✅ 그래픽 자산: 아이콘512·피처그래픽 [docs/store-assets/](../store-assets/), 스크린샷 [docs/screenshots/store-1.0.0+4/](../screenshots/store-1.0.0+4/)
+> - ⬜ **Google Play Console 개발자 계정**($25 1회 결제 + 신원확인, 며칠 걸릴 수 있음) — 이게 없으면 시작 불가. 계정 있으면 바로 진행.
 
-> 시간: **약 60~90분** (그래픽 자산 준비 시간 포함)
+> 시간: **약 60~90분**
 
 ---
 
@@ -13,13 +14,13 @@
 
 ### A-1. 그래픽 자산
 
-| 항목 | 크기 | 비고 |
+| 항목 | 크기 | 준비된 파일 |
 |---|---|---|
-| 앱 아이콘 | 512×512 PNG | Phase 13.1의 1024×1024를 다운스케일 |
-| 피처 그래픽 | 1024×500 JPG/PNG | Play Store 상세 페이지 헤더 |
-| 폰 스크린샷 | 최소 2장, 최대 8장. 16:9 또는 9:16. 320~3840px | 모드 선택 / 메인 / 복용 체크 / 자녀와 연결 / 자녀 홈 권장 |
+| 앱 아이콘 | 512×512 PNG | `docs/store-assets/icon_512.png` ✅ |
+| 피처 그래픽 | 1024×500 JPG | `docs/store-assets/feature_graphic_1024x500.jpg` ✅ |
+| 폰 스크린샷 | 최소 2장, 최대 8장 | `docs/screenshots/store-1.0.0+4/` 4종(홈·일정·마법사·자녀로그인, 1206×2622) ✅ |
 
-> 무료 도구: <https://www.appstorescreenshot.com/> 또는 Figma Frame export.
+> 위 자산은 라이트 UI(1.0.0+4) 기준으로 준비 완료. 옛 `docs/screenshots/01~05`는 사용 금지.
 
 ### A-2. 텍스트
 
@@ -109,9 +110,7 @@ KYH 약 알림
 
 ### C-4. 개인정보처리방침
 
-GitHub Pages 또는 Gist URL 입력 (`docs/legal/privacy.md`를 호스팅한 URL).
-
-저장.
+URL 입력란에 **`https://y0000h.github.io/kyh_medi/`** 붙여넣기 (이미 라이브). 저장.
 
 ---
 
